@@ -1,0 +1,12 @@
+{
+    "client": "100323",
+	"contrat": "A",
+    "mois": "2017-01",
+    "reclamations":     [
+                {
+            "soin": "100",
+            "date": "2017-01-11",
+            "montant": "58.50$"
+        }
+    ]
+}
