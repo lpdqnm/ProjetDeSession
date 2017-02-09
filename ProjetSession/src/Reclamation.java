@@ -28,39 +28,6 @@ public class Reclamation {
     }
     
     /**
-     * Obtenir le soin
-     * @return String soin
-     */
-    public String getSoin() {
-        return soin;
-    }
-
-    /**
-     * Obtenir la date
-     * @return String date
-     */
-    public String getDate() {
-        return date;
-    }
-
-    /**
-     * Obtenir le montant
-     * @return String montant
-     */
-    public String getMontant() {
-        return montant;
-    }
-
-    /**
-     * Override de la méthode to string pour l'objet
-     * @return String l'objet
-     */
-    @Override
-    public String toString() {
-        return "Reclamation{" + "soin=" + soin + ", date=" + date + ", montant=" + montant + '}';
-    }
-    
-    /**
      * Valide la reclamation
      * @param DateTraitement La date du traitement
      * @return True si valide
@@ -123,5 +90,38 @@ public class Reclamation {
                 return false;
         }
 
+    }
+    
+    /**
+     * Obtenir le soin
+     * @return String soin
+     */
+    public String getSoin() {
+        return soin;
+    }
+
+    /**
+     * Obtenir la date
+     * @return String date
+     */
+    public String getDate() {
+        return date;
+    }
+
+    /**
+     * Obtenir le montant
+     * @return String montant
+     */
+    public String getMontant() {
+        return montant;
+    }
+
+    /**
+     * Override de la méthode to string pour l'objet
+     * @return String l'objet
+     */
+    @Override
+    public String toString() {
+        return "Reclamation{" + "soin=" + soin + ", date=" + date + ", montant=" + montant + '}';
     }
 }

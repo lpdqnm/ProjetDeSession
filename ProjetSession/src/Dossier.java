@@ -32,6 +32,42 @@ public class Dossier {
         this.reclamations = reclamations;
         this.remboursements = remboursements;
     }
+        
+    /**
+     * Valide si le dossier
+     * @return True si valide
+     *         False sinon
+     */
+    public boolean estValide(){
+        if(!this.estValideNumeroClient() || !this.estValideContrat())
+            return false;
+  
+        for (int i = 0; i < this.reclamations.length; i++) { 
+            if(!reclamations[i].estValide(this.mois))
+                return false;
+        }
+        
+        return true;
+    }
+    
+    /**
+     * Valide le numéro du client
+     * @return True si valide
+     *         False sinon
+     */
+    private boolean estValideNumeroClient(){
+        return this.numeroClient.matches("[0-9]{6}");
+    }
+    
+    /**
+     * Valide le contrat
+     * @return True si valide
+     *         False sinon
+     */
+    private boolean estValideContrat(){
+        return this.contrat.matches("[A-D]");
+    }
+    
     /**
      * Obtenir le numéro du client
      * @return String Numéro du client
@@ -90,40 +126,5 @@ public class Dossier {
                 + contrat + ", mois=" + mois + ",\nreclamations=" 
                 + Arrays.toString(reclamations) + ",\nremboursements=" 
                 + Arrays.toString(remboursements) + '}';
-    }
-    
-    /**
-     * Valide si le dossier
-     * @return True si valide
-     *         False sinon
-     */
-    public boolean estValide(){
-        if(!this.estValideNumeroClient() || !this.estValideContrat())
-            return false;
-  
-        for (int i = 0; i < this.reclamations.length; i++) { 
-            if(!reclamations[i].estValide(this.mois))
-                return false;
-        }
-        
-        return true;
-    }
-    
-    /**
-     * Valide le numéro du client
-     * @return True si valide
-     *         False sinon
-     */
-    private boolean estValideNumeroClient(){
-        return this.numeroClient.matches("[0-9]{6}");
-    }
-    
-    /**
-     * Valide le contrat
-     * @return True si valide
-     *         False sinon
-     */
-    private boolean estValideContrat(){
-        return this.contrat.matches("[A-D]");
     }
 }

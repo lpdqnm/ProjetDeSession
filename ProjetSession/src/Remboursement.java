@@ -28,29 +28,6 @@ public class Remboursement {
         setMontant(soin, montant);
     }
 
-    /**
-     * Obtenir soin
-     * @return String soin 
-     */
-    public String getSoin() {        
-        return soin;
-    }
-
-    /**
-     * Obtenir date
-     * @return String date
-     */
-    public String getDate() {
-        return date;
-    }
-    
-    /**
-     * Obtenir montant
-     * @return String montant
-     */
-    public String getMontant() {
-        return montant + DOLLARS;
-    }
     
     /**
      * Modifie le montant
@@ -279,5 +256,29 @@ public class Remboursement {
             montantRemb = montant < 90 ? montant : 90;
         }         
         return montantRemb;
+    }
+    
+    /**
+     * Obtenir soin
+     * @return String soin 
+     */
+    public String getSoin() {        
+        return soin;
+    }
+
+    /**
+     * Obtenir date
+     * @return String date
+     */
+    public String getDate() {
+        return date;
+    }
+    
+    /**
+     * Obtenir montant
+     * @return String montant
+     */
+    public String getMontant() {
+        return montant + DOLLARS;
     }
 }

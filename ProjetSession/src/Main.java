@@ -18,9 +18,15 @@ public class Main {
         Reclamation item;
         
         try {
-            dossier = fichierJSON.lire(args[0]);
-            //dossier = fichierJSON.lire("inputFile.json");
+            if(args.length != 2){
+                System.out.println("Erreur avec le nombre de paramètres.");
+                System.out.println("Vous devez avoir 2 paramètres.");
+                System.out.println("<FICHIERENTREE> <FICHIERSORTIE>");
+                System.exit(1); 
+            }
             
+            dossier = fichierJSON.lire(args[0]);
+
             if (dossier != null && dossier.estValide()) {
                 reclamations = dossier.getReclamations();
                 remboursements = new Remboursement[reclamations.length];
@@ -32,15 +38,12 @@ public class Main {
                 }
                 dossier.setRemboursements(remboursements);
                 fichierJSON.ecrire(args[1], dossier);
-                //fichierJSON.ecrire("outputFile.json", dossier);
             } else {
                 fichierJSON.ecrireErreur(args[1]);
-                //fichierJSON.ecrireErreur("outputFile.json");
             }
         } catch (IOException ex) {
             try {
                 fichierJSON.ecrireErreur(args[1]);
-                //fichierJSON.ecrireErreur("outputFile.json");
             } catch (IOException ex1) {
                 System.out.println("Erreur avec le fichier de sortie : "
                         + ex.getLocalizedMessage());
