@@ -14,88 +14,64 @@ public class Remboursement {
     private String date;
     private String montant;
 
-    /**
-     * Constructeur du remboursement
-     * @param contrat
-     * @param soin
-     * @param date
-     * @param montant 
-     */
     public Remboursement(String contrat, String soin, String date, String montant) {
         this.contrat = contrat;
         this.soin = soin;
         this.date = date;
-        setMontant(soin, montant);
+        setMontant(formatSoin(soin), formatMontant(montant));
     }
-
     
     /**
-     * Modifie le montant
-     * @param soin
-     * @param montant 
+     * Prend en paramètre un string contenant ou non le signe de dollars "$"
+     * et contenant un point ou une virgule comme séparateur de décimal
+     * @param montant
+     * @return double montant
      */
-    private void setMontant(String soin, String montant) {        
+    private double formatMontant (String montant){
         double montantReclame;
-        int iSoin;
         
         try{
-           montantReclame = Double.parseDouble(montant.replace("$",""));
+           montantReclame = Double.parseDouble(montant.replace("$","").replace(",","."));
         }catch(NumberFormatException ex){
             montantReclame = 0.00;
         }
-        
+        return montantReclame;
+    }
+    
+    private int formatSoin (String soin){        
         try{
-            iSoin = Integer.parseInt(this.soin);
-        }catch(NumberFormatException ex){
-            this.montant = montant;
-            return;
+            return Integer.parseInt(this.soin);
+        }catch(NumberFormatException ex){            
+            return -1;
         }
-        
-        if(iSoin == Soin.MASSOTHERAPIE){
-            this.montant = String.format( "%.2f", 
-                    this.getMontantMasso(this.contrat, montantReclame));       
-        }else if(iSoin == Soin.OSTEOPATHIE){
-            this.montant = String.format( "%.2f",
-                    this.getMontantOsteo(this.contrat, montantReclame));
-        }else if(iSoin >= Soin.MIN_SOIN_DENTAIRE &&
-                iSoin <= Soin.MAX_SOIN_DENTAIRE){
-            this.montant = String.format( "%.2f",
-                    this.getMontantDentaire(this.contrat, montantReclame));           
-        }else if(iSoin == Soin.PSYCHOLOGIE_INDIVIDUELLE){
-            this.montant = String.format( "%.2f",
-                    this.getMontantPsycho(this.contrat, montantReclame));           
-        }else if(iSoin == Soin.NATUROPATHIE_ACUPONCTURE){
-            this.montant = String.format( "%.2f",
-                    this.getMontantNaturo(this.contrat, montantReclame));          
-        }else if(iSoin == Soin.CHIROPRATIE){
-            this.montant = String.format( "%.2f",
-                    this.getMontantChiro(this.contrat, montantReclame));          
-        }else if(iSoin == Soin.PHYSIOTHERAPIE){
-            this.montant = String.format( "%.2f",
-                    this.getMontantPhysio(this.contrat, montantReclame));           
-        }else if(iSoin == Soin.ORTHOPHONIE_ERGOTHERAPIE){
-            this.montant = String.format( "%.2f",
-                    this.getMontantOrtho(this.contrat, montantReclame));                     
+    }
+
+    private void setMontant(int soin, double montant) {   
+        if(soin == Soin.MASSOTHERAPIE){
+            this.montant = String.format( "%.2f", this.getMontantMasso(this.contrat, montant));       
+        }else if(soin == Soin.OSTEOPATHIE){
+            this.montant = String.format( "%.2f",this.getMontantOsteo(this.contrat, montant));
+        }else if(soin == Soin.KINESITHERAPIE){
+            this.montant = String.format( "%.2f",this.getMontantKine(this.contrat, montant));
+        }else if(soin == Soin.MEDECIN_GENERALISTE_PRIVE){
+            this.montant = String.format( "%.2f",this.getMontantMedGen(this.contrat, montant));            
+        }else if(soin >= Soin.MIN_SOIN_DENTAIRE && soin <= Soin.MAX_SOIN_DENTAIRE){
+            this.montant = String.format( "%.2f",this.getMontantDentaire(this.contrat, montant));           
+        }else if(soin == Soin.PSYCHOLOGIE_INDIVIDUELLE){
+            this.montant = String.format( "%.2f",this.getMontantPsycho(this.contrat, montant));           
+        }else if(soin == Soin.NATUROPATHIE_ACUPONCTURE){
+            this.montant = String.format( "%.2f",this.getMontantNaturo(this.contrat, montant));          
+        }else if(soin == Soin.CHIROPRATIE){
+            this.montant = String.format( "%.2f",this.getMontantChiro(this.contrat, montant));          
+        }else if(soin == Soin.PHYSIOTHERAPIE){
+            this.montant = String.format( "%.2f",this.getMontantPhysio(this.contrat, montant));           
+        }else if(soin == Soin.ORTHOPHONIE_ERGOTHERAPIE){
+            this.montant = String.format( "%.2f",this.getMontantOrtho(this.contrat, montant));              
         }else{
-            this.montant = montant;
+            this.montant = String.valueOf(montant);
         }     
     }
 
-    /**
-     * Override de la méthode to string pour l'objet
-     * @return String l'objet
-     */
-    @Override
-    public String toString() {
-        return "Remboursement{" + "soin=" + soin + ", date=" + date + ", montant=" + montant + '}';
-    }
-    
-    /**
-     * Obtenir le montant remboursé pour Massothérapie
-     * @param contrat
-     * @param montant
-     * @return double montant remboursé
-     */
     private double getMontantMasso(String contrat, double montant){
         double montantRemb = 0;
         
@@ -107,58 +83,46 @@ public class Remboursement {
             montantRemb = montant * 0.9;
         }else if(contrat.equals(Contrat.D)){
             montantRemb = montant < 85 ? montant : 85;
+        }else if(contrat.equals(Contrat.E)){
+            montantRemb = montant * 0.15;
         }         
         return montantRemb;
     }
     
-    /**
-     * Obtenir le montant remboursé pour Ostéopathie
-     * @param contrat
-     * @param montant
-     * @return double montant remboursé
-     */
     private double getMontantOsteo(String contrat, double montant){
         double montantRemb = 0;
         
         if(contrat.equals(Contrat.A)){
-            montantRemb = montant * 0.25;
+            montantRemb = montant * 0.35;
         }else if(contrat.equals(Contrat.B)){
             montantRemb = (montant * 0.5) < 50 ? (montant * 0.5) : 50;
         }else if(contrat.equals(Contrat.C)){
-            montantRemb = montant * 0.9;
+            montantRemb = montant * 0.95;
         }else if(contrat.equals(Contrat.D)){
             montantRemb = montant < 75 ? montant : 75;
+        }else if(contrat.equals(Contrat.E)){
+            montantRemb = montant * 0.25;
         }         
         return montantRemb;
     }
     
-    /**
-     * Obtenir le montant remboursé pour Psychologie
-     * @param contrat
-     * @param montant
-     * @return double montant remboursé
-     */
     private double getMontantPsycho(String contrat, double montant){
         double montantRemb = 0;
         
         if(contrat.equals(Contrat.A)){
             montantRemb = montant * 0.25;
         }else if(contrat.equals(Contrat.B)){
-            montantRemb = montant < 70 ? montant : 70;
+            montantRemb = montant;
         }else if(contrat.equals(Contrat.C)){
             montantRemb = montant * 0.9;
         }else if(contrat.equals(Contrat.D)){
             montantRemb = montant < 100 ? montant : 100;
+        }else if(contrat.equals(Contrat.E)){
+            montantRemb = montant * 0.12;
         }         
         return montantRemb;
     }
-    
-    /**
-     * Obtenir le montant remboursé pour Dentaire
-     * @param contrat
-     * @param montant
-     * @return double montant remboursé
-     */    
+      
     private double getMontantDentaire(String contrat, double montant){
         double montantRemb = 0;
         
@@ -170,16 +134,12 @@ public class Remboursement {
             montantRemb = montant * 0.9;
         }else if(contrat.equals(Contrat.D)){
             montantRemb = montant;
+        }else if(contrat.equals(Contrat.E)){
+            montantRemb = montant * 0.6;
         }         
         return montantRemb;
     }
     
-    /**
-     * Obtenir le montant remboursé pour Naturopathie/Acuponcture
-     * @param contrat
-     * @param montant
-     * @return double montant remboursé
-     */
     private double getMontantNaturo(String contrat, double montant){
         double montantRemb = 0;
         
@@ -191,16 +151,12 @@ public class Remboursement {
             montantRemb = montant * 0.9;
         }else if(contrat.equals(Contrat.D)){
             montantRemb = montant < 65 ? montant : 65;
+        }else if(contrat.equals(Contrat.E)){    
+            montantRemb = (montant * 0.25) < 15 ? (montant * 0.25) : 15;
         }         
         return montantRemb;
     }
     
-    /**
-     * Obtenir le montant remboursé pour Chiropratie
-     * @param contrat
-     * @param montant
-     * @return double montant remboursé
-     */
     private double getMontantChiro(String contrat, double montant){
         double montantRemb = 0;
         
@@ -211,17 +167,13 @@ public class Remboursement {
         }else if(contrat.equals(Contrat.C)){
             montantRemb = montant * 0.9;
         }else if(contrat.equals(Contrat.D)){
-            montantRemb = montant < 75 ? montant : 75;
+            montantRemb = montant;
+        }else if(contrat.equals(Contrat.E)){
+            montantRemb = (montant * 0.30) < 20 ? (montant * 0.30) : 20;
         }         
         return montantRemb;
     }
-    
-    /**
-     * Obtenir le montant remboursé pour Physiotérapie
-     * @param contrat
-     * @param montant
-     * @return double montant remboursé
-     */
+
     private double getMontantPhysio(String contrat, double montant){
         double montantRemb = 0;
         
@@ -230,19 +182,15 @@ public class Remboursement {
         }else if(contrat.equals(Contrat.B)){
             montantRemb = montant;
         }else if(contrat.equals(Contrat.C)){
-            montantRemb = montant * 0.9;
+            montantRemb = montant * 0.75;
         }else if(contrat.equals(Contrat.D)){
             montantRemb = montant < 100 ? montant : 100;
+        }else if(contrat.equals(Contrat.E)){
+            montantRemb = montant * 0.15;
         }         
         return montantRemb;
     }
     
-    /**
-     * Obtenir le montant remboursé pour Orthophonie/Ergothérapie
-     * @param contrat
-     * @param montant
-     * @return double montant remboursé
-     */
     private double getMontantOrtho(String contrat, double montant){
         double montantRemb = 0;
         
@@ -254,30 +202,57 @@ public class Remboursement {
             montantRemb = montant * 0.9;
         }else if(contrat.equals(Contrat.D)){
             montantRemb = montant < 90 ? montant : 90;
+        }else if(contrat.equals(Contrat.E)){
+            montantRemb = montant * 0.22;
         }         
         return montantRemb;
     }
     
-    /**
-     * Obtenir soin
-     * @return String soin 
-     */
+    private double getMontantKine(String contrat, double montant){
+        double montantRemb = 0;
+        
+        if(contrat.equals(Contrat.A) || contrat.equals(Contrat.B)){
+            montantRemb = 0;            
+        }else if(contrat.equals(Contrat.C)){
+            montantRemb = montant * 0.85;
+        }else if(contrat.equals(Contrat.D)){
+            montantRemb = montant < 150 ? montant : 150;
+        }else if(contrat.equals(Contrat.E)){
+            montantRemb = montant * 0.15;
+        }         
+        return montantRemb;
+    }
+    
+    private double getMontantMedGen(String contrat, double montant){
+        double montantRemb = 0;
+        
+        if(contrat.equals(Contrat.A)){
+            montantRemb = montant * 0.5;
+        }else if(contrat.equals(Contrat.B)){
+            montantRemb = montant * 0.75;
+        }else if(contrat.equals(Contrat.C)){
+            montantRemb = montant * 0.90;
+        }else if(contrat.equals(Contrat.D)){
+            montantRemb = montant * 0.95;
+        }else if(contrat.equals(Contrat.E)){
+            montantRemb = (montant * 0.25) < 20 ? (montant * 0.25) : 20;
+        }         
+        return montantRemb;
+    }
+    
+    @Override
+    public String toString() {
+        return "Remboursement{" + "soin=" + soin + ", date=" + date + ", montant=" + montant + '}';
+    }
+    
     public String getSoin() {        
         return soin;
     }
 
-    /**
-     * Obtenir date
-     * @return String date
-     */
     public String getDate() {
         return date;
     }
     
-    /**
-     * Obtenir montant
-     * @return String montant
-     */
     public String getMontant() {
         return montant + DOLLARS;
     }
