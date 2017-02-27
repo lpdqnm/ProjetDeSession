@@ -12,60 +12,81 @@ import net.sf.json.JSONSerializer;
 */
 public class Fichier {
     
+    //CONSTANTES
+    public static final String [] CLES = {"dossier", "mois", "reclamations",
+            "soin", "montant", "date", "total"};
+    public static final int DOSS = 0;
+    public static final int MOIS = 1;
+    public static final int RECL = 2;
+    public static final int SOIN = 3;
+    public static final int MONT = 4;
+    public static final int DATE = 5;
+    public static final int TOT = 6;  
+    public static final int NB_INFOS = 2;
+    
    /**
    * Lit un fichier .json et retourne l'objet Dossier
    * @param nomFichierEntrer Le nom du fichier à lire
    * @return Dossier Retourne l'objet Dossier.
    */
-    public Dossier lire(String nomFichierEntrer){
-        Dossier dossier = null;
-        String client, contrat, mois, soin, date, montant;
-        JSONArray tabObjJson;
-        JSONObject item, racine;
-        int lgTab;
-        Reclamation [] reclamations;
+    public static Dossier lire(String nomFichierEntrer){
+        JSONObject racine = fichierEnObjJSON(nomFichierEntrer);
         
+        if (racine == null)
+            return null;
+        
+        String [] infosClient = obtInfosClient(racine);
+        JSONArray tabObjJSON = racine.getJSONArray(CLES[RECL]);
+        
+        if (tabObjJSON == null)
+            return null;
+        
+        return new Dossier(infosClient[DOSS], infosClient[MOIS],
+                obtTabReclam(tabObjJSON), null, null);
+    }
+    
+    private static JSONObject fichierEnObjJSON(String nomFichierEntrer){
         try{
             //Lire fichier et convertir en JSONObject
             String textJson = Utf8File.loadFileIntoString(nomFichierEntrer);
-            racine = (JSONObject) JSONSerializer.toJSON(textJson);
+            return (JSONObject) JSONSerializer.toJSON(textJson);
         }catch(Exception ex){
             return null;
         }
-        
-        if (racine != null) {
-            try{
-                //Obtenir les éléments à la racine
-                client = racine.getString("client");
-                contrat = racine.getString("contrat");
-                mois = racine.getString("mois");
-                //Obtenir le tableau de réclamations
-                tabObjJson = racine.getJSONArray("reclamations");
-            }catch(Exception ex){
-                return null;
-            }
+    }
+    
+    private static Reclamation [] obtTabReclam(JSONArray tabJSON){
+        Reclamation [] tabReclam = null;
             
-            lgTab = tabObjJson.size();
-            reclamations = new Reclamation[lgTab];
-            
-            //Boucle sur les réclamations trouvées
-            for (int i = 0; i < lgTab; i++) {
-                try{
-                    item = tabObjJson.getJSONObject(i);
-                    soin = item.getString("soin");
-                    date = item.getString("date");
-                    montant = item.getString("montant");
-                }catch(Exception ex){
+        //Boucle sur les réclamations trouvées
+        tabReclam = new Reclamation[tabJSON.size()];
+        for (int i = 0; i < tabJSON.size(); i++) {
+                tabReclam[i] = obtReclam(tabJSON.getJSONObject(i));
+                if (tabReclam[i] == null)
                     return null;
-                }
-                
-                reclamations[i] = new Reclamation(soin, date, montant);
-            }
-            
-            dossier = new Dossier(client, contrat, mois, reclamations, null);
         }
-        
-        return dossier;
+        return tabReclam;
+    }
+    
+    private static  Reclamation obtReclam(JSONObject objJSON){
+        try{
+            return new Reclamation(objJSON.getString(CLES[SOIN]),
+                    objJSON.getString(CLES[DATE]), objJSON.getString(CLES[MONT]));
+        }catch(Exception ex){
+            return null;
+        }
+    }
+    
+    private static String [] obtInfosClient(JSONObject objJSON){
+        //Permet d'avoir les valeurs du "dossier" et du "mois" des réclamations
+        String [] tabInfos = new String[NB_INFOS];
+        try {
+            tabInfos[DOSS] = objJSON.getString(CLES[DOSS]);
+            tabInfos[MOIS] = objJSON.getString(CLES[MOIS]);
+        } catch (Exception e) {
+            return null;
+        }
+        return tabInfos;
     }
     
    /**

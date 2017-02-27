@@ -10,12 +10,36 @@ import java.util.Arrays;
 */
 public class Dossier {
     
+    private final String dossierClient;
+
     private final String numeroClient;
     private final String contrat;
     private final String mois;
     private final Reclamation []reclamations;
     private Remboursement [] remboursements;
 
+    private final String total;
+
+    /**
+     *Constructeur Dossier
+     * @param dossierClient
+     * @param mois
+     * @param reclamations
+     * @param remboursements
+     * @param total
+     */
+    public Dossier(String dossierClient, String mois, Reclamation[] reclamations,
+            Remboursement[] remboursements, String total) {
+        numeroClient = "";//Juste pour la compilation. A RETIIRER plus tard
+        contrat = "";//Juste pour la compilation. A RETIIRER plus tard
+        
+        this.dossierClient = dossierClient;
+        this.mois = mois;
+        this.reclamations = reclamations;
+        this.remboursements = remboursements;
+        this.total = total;
+    }
+    
     /**
      * Constructeur Dossier
      * @param numeroClient
@@ -26,6 +50,9 @@ public class Dossier {
      */
     public Dossier(String numeroClient, String contrat, String mois, 
             Reclamation[] reclamations, Remboursement[] remboursements) {
+        dossierClient = "";//Juste pour la compilation. A RETIIRER plus tard
+        total = "";//Juste pour la compilation. A RETIIRER plus tard
+        
         this.numeroClient = numeroClient;
         this.contrat = contrat;
         this.mois = mois;
@@ -122,9 +149,9 @@ public class Dossier {
      */
     @Override
     public String toString() {
-        return "Dossier{" + "numeroClient=" + numeroClient + ", contrat=" 
-                + contrat + ", mois=" + mois + ",\nreclamations=" 
-                + Arrays.toString(reclamations) + ",\nremboursements=" 
-                + Arrays.toString(remboursements) + '}';
+        return "Dossier{" + "dossierClient=" + dossierClient + ", mois=" + mois
+                + ",\nreclamations=" + Arrays.toString(reclamations)
+                + ",\nremboursements=" + Arrays.toString(remboursements)
+                +",\ntotal=" + total  + "}";
     }
 }
