@@ -14,15 +14,16 @@ public class Fichier {
     
     //CONSTANTES
     public static final String [] CLES = {"dossier", "mois", "reclamations",
-            "soin", "montant", "date", "total"};
+            "soin", "date", "montant", "total", "remboursements"};
     public static final int DOSS = 0;
     public static final int MOIS = 1;
     public static final int RECL = 2;
     public static final int SOIN = 3;
-    public static final int MONT = 4;
-    public static final int DATE = 5;
+    public static final int DATE = 4;
+    public static final int MONT = 5;
     public static final int TOT = 6;  
-    public static final int NB_INFOS = 2;
+    public static final int NB_INFOS = 7;
+    public static final int REMB = 2;
     
    /**
    * Lit un fichier .json et retourne l'objet Dossier
@@ -35,14 +36,17 @@ public class Fichier {
         if (racine == null)
             return null;
         
-        String [] infosClient = obtInfosClient(racine);
         JSONArray tabObjJSON = racine.getJSONArray(CLES[RECL]);
         
         if (tabObjJSON == null)
             return null;
         
-        return new Dossier(infosClient[DOSS], infosClient[MOIS],
-                obtTabReclam(tabObjJSON), null, null);
+        try {
+            return new Dossier(racine.getString(CLES[DOSS]), racine.getString(
+                CLES[MOIS]),obtTabReclam(tabObjJSON), null, null);
+        } catch (Exception e) {
+            return null;
+        }
     }
     
     private static JSONObject fichierEnObjJSON(String nomFichierEntrer){
@@ -77,47 +81,47 @@ public class Fichier {
         }
     }
     
-    private static String [] obtInfosClient(JSONObject objJSON){
-        //Permet d'avoir les valeurs du "dossier" et du "mois" des réclamations
-        String [] tabInfos = new String[NB_INFOS];
-        try {
-            tabInfos[DOSS] = objJSON.getString(CLES[DOSS]);
-            tabInfos[MOIS] = objJSON.getString(CLES[MOIS]);
-        } catch (Exception e) {
-            return null;
-        }
-        return tabInfos;
-    }
-    
    /**
    * Écrit le résultat de l'objet dossier dans un fichier .json
    * @param nomFichierSortie Le nom du fichier à écrire
    * @param dossier L'objet Dossier
    */
-    public void ecrire(String nomFichierSortie, Dossier dossier) throws IOException {
-        JSONObject jsonObj = new JSONObject();
-        JSONArray jsonArr = new JSONArray();
-        JSONObject item;
-        
+    public static void ecrire(String nomFichierSortie, Dossier dossier) 
+            throws IOException {
+        JSONObject racine = new JSONObject();
         if (dossier != null) {
-            jsonObj.accumulate("client", dossier.getNumeroClient());
-            jsonObj.accumulate("mois", dossier.getMois());
-            Remboursement [] remboursements = dossier.getRemboursements();
-
-            for (int i = 0; i < remboursements.length; i++) {
-                item = new JSONObject();
-                item.accumulate("soin", remboursements[i].getSoin());
-                item.accumulate("date", remboursements[i].getDate());
-                item.accumulate("montant", remboursements[i].getMontant());
-
-                jsonArr.add(item);
-            }
-
-             jsonObj.accumulate("remboursements", jsonArr);
-
-             Utf8File.saveStringIntoFile(nomFichierSortie, jsonObj.toString(4));
-         }
+            racine.accumulate(CLES[DOSS], dossier.getDossierClient());
+            racine.accumulate(CLES[MOIS], dossier.getMois());
+            racine.accumulate(CLES[REMB], obtTabJSONRemb(dossier.getRemboursements()));
+            racine.accumulate(CLES[TOT], dossier.getTotal());
+        }
+        Utf8File.saveStringIntoFile(nomFichierSortie, racine.toString(4));
     }
+    
+    private static JSONArray obtTabJSONRemb(Remboursement [] tabRemb){
+        if (tabRemb == null)
+            return null;
+        
+        JSONArray tabJSON = new JSONArray();
+        for (int i = 0; i < tabRemb.length; i++) {
+            if (obtObjJSONRemb(tabRemb[i]) == null)
+                return null;
+            
+            tabJSON.add(obtObjJSONRemb(tabRemb[i]));
+        }
+        return tabJSON;
+    }
+    
+    private static JSONObject obtObjJSONRemb(Remboursement remboursement){
+        if (remboursement == null)
+            return null;
+        
+        JSONObject objJSON = new JSONObject();
+        objJSON.accumulate(CLES[SOIN], remboursement.getSoin());
+        objJSON.accumulate(CLES[DATE], remboursement.getDate());
+        objJSON.accumulate(CLES[MONT], remboursement.getMontant());
+        return objJSON;
+    } 
     
     /**
     * Écrit une erreur dans le fichier .json passé en paramètre.

@@ -18,7 +18,7 @@ public class Dossier {
     private final Reclamation []reclamations;
     private Remboursement [] remboursements;
 
-    private final String total;
+    private String total;
 
     /**
      *Constructeur Dossier
@@ -143,6 +143,26 @@ public class Dossier {
         this.remboursements = remboursements;
     }
 
+    /**
+     *
+     * @return  dossierClient
+     */
+    public String getDossierClient() {
+        return dossierClient;
+    }
+
+    /**
+     *
+     * @return  total
+     */
+    public String getTotal() {
+        return total;
+    }
+
+    public void setTotal(String total) {
+        this.total = total;
+    }
+    
     /**
      * Override de la méthode to string pour l'objet
      * @return String l'objet
