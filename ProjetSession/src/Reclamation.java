@@ -15,34 +15,17 @@ public class Reclamation {
     private final String date;
     private final String montant;
 
-    /**
-     * Constructeur pour reclamation
-     * @param soin
-     * @param date
-     * @param montant 
-     */
     public Reclamation(String soin, String date, String montant) {
         this.soin = soin;
         this.date = date;
         this.montant = montant;
     }
     
-    /**
-     * Valide la reclamation
-     * @param DateTraitement La date du traitement
-     * @return True si valide
-     *         False sinon
-     */
     public boolean estValide(String DateTraitement){
-        return estValideSoin() && estValideMontant() 
-                && estValideDate(DateTraitement);
+        return estValideSoin() && estValideMontant() && estValideFormatDate(DateTraitement) 
+                && estValideDateReclamVsDateDemande(DateTraitement);
     }
     
-    /**
-     * Valide le soin
-     * @return True si valide
-     *         Faux sinon
-     */
     private boolean estValideSoin(){
         int iSoin;
         
@@ -59,67 +42,62 @@ public class Reclamation {
                 iSoin == Soin.ORTHOPHONIE_ERGOTHERAPIE ||
                 iSoin == Soin.OSTEOPATHIE ||
                 iSoin == Soin.PHYSIOTHERAPIE ||
-                iSoin == Soin.PSYCHOLOGIE_INDIVIDUELLE;
+                iSoin == Soin.PSYCHOLOGIE_INDIVIDUELLE ||
+                iSoin == Soin.KINESITHERAPIE ||
+                iSoin == Soin.MEDECIN_GENERALISTE_PRIVE;
     }
     
-    /**
-     * Valide le montant
-     * @return True si valide
-     *         False sinon
-     */
     private boolean estValideMontant(){
+        /**
+         * REGEX
+         * Chiffres entre 0 et 9
+         * Suivi d'un point ou d'une virgule
+         * Suivi de un ou deux chiffre entre 0 et 9
+         * Se terminant par un signe de dollars $
+         */
         return this.montant.matches("[0-9]+([,.][0-9]{1,2})?[\\\\$]");
     }
     
     /**
-     * Valide le format de date et la date de la demande 
-     * vs la date de reclamation. Les 2 dates doivent être dans le même mois.
+     * Valide l'année et le mois de date de la demande vs la date de reclamation.
      * @param DateDemande La date de la demande
      * @return True si valide
      *         False sinon
      */
-    private boolean estValideDate(String DateDemande){       
+    private boolean estValideDateReclamVsDateDemande(String DateDemande){       
+        return this.date.substring(0,7).equals(DateDemande.substring(0,7));
+    }
+    
+    /**
+     * Valide le format de date ISO 8601 (YYYY-MM-DD)
+     * @param DateDemande
+     * @return 
+     */
+    private boolean estValideFormatDate(String DateDemande){       
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         sdf.setLenient(false);
         
         try {
             sdf.parse(this.date);
-            return this.date.substring(0,7).equals(
-                    DateDemande.substring(0,7));
         } catch (ParseException e) {
                 return false;
         }
 
+       return true;
     }
     
-    /**
-     * Obtenir le soin
-     * @return String soin
-     */
     public String getSoin() {
         return soin;
     }
 
-    /**
-     * Obtenir la date
-     * @return String date
-     */
     public String getDate() {
         return date;
     }
 
-    /**
-     * Obtenir le montant
-     * @return String montant
-     */
     public String getMontant() {
         return montant;
     }
 
-    /**
-     * Override de la méthode to string pour l'objet
-     * @return String l'objet
-     */
     @Override
     public String toString() {
         return "Reclamation{" + "soin=" + soin + ", date=" + date + ", montant=" + montant + '}';

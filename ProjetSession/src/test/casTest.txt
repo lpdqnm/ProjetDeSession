@@ -30,7 +30,7 @@ Cas de test
 2.19 pas de reclamation - PASSED
 2.20 pas de soin - PASSED
 2.21 pas de contrat - PASSED
-2.22 pas de date - FAILED
+2.22 pas de date - PASSED
 2.23 date vide - PASSED
 
 3. Erreur logique
@@ -38,6 +38,7 @@ Cas de test
 
 4. Validation remboursement de soin
 4.1 Type A (comparer avec compare4.1.json) - PASSED
-4.2 Type B (comparer avec compare4.1.json) - PASSED
-4.3 Type C (comparer avec compare4.1.json) - PASSED
-4.4 Type D (comparer avec compare4.1.json) - PASSED
+4.2 Type B (comparer avec compare4.2.json) - PASSED
+4.3 Type C (comparer avec compare4.3.json) - PASSED
+4.4 Type D (comparer avec compare4.4.json) - PASSED
+4.5 Type E (comparer avec compare4.5.json) - PASSED
