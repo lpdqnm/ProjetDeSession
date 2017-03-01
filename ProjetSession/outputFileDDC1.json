@@ -1,7 +1,7 @@
 {
     "dossier": "A100323",
     "mois": "2017-01",
-    "reclamations":     [
+    "remboursements":     [
                 {
             "soin": "100",
             "date": "2017-01-11",
@@ -18,5 +18,5 @@
             "montant": "0,00$"
         }
     ],
-    "total": "test-total"
+    "total,": "test-total"
 }

@@ -14,17 +14,18 @@ public class Fichier {
     
     //CONSTANTES
     public static final String [] CLES = {"dossier", "mois", "reclamations",
-            "soin", "date", "montant", "total", "remboursements"};
+            "soin", "date", "montant", "remboursements", "total,", "message"};
     public static final int DOSS = 0;
     public static final int MOIS = 1;
     public static final int RECL = 2;
     public static final int SOIN = 3;
     public static final int DATE = 4;
     public static final int MONT = 5;
-    public static final int TOT = 6;  
-    public static final int NB_INFOS = 7;
-    public static final int REMB = 2;
+    public static final int REMB = 6;
+    public static final int TOT = 7;  
+    public static final int MSG = 8;  
     
+    public static String MSG_ERREUR = "Données invalides";
    /**
    * Lit un fichier .json et retourne l'objet Dossier
    * @param nomFichierEntrer Le nom du fichier à lire
@@ -32,18 +33,10 @@ public class Fichier {
    */
     public static Dossier lire(String nomFichierEntrer){
         JSONObject racine = fichierEnObjJSON(nomFichierEntrer);
-        
-        if (racine == null)
-            return null;
-        
-        JSONArray tabObjJSON = racine.getJSONArray(CLES[RECL]);
-        
-        if (tabObjJSON == null)
-            return null;
-        
-        try {
+        try {                    
             return new Dossier(racine.getString(CLES[DOSS]), racine.getString(
-                CLES[MOIS]),obtTabReclam(tabObjJSON), null, null);
+                    CLES[MOIS]),obtTabReclam(racine.getJSONArray(CLES[RECL])),
+                    null, null);
         } catch (Exception e) {
             return null;
         }
@@ -59,7 +52,8 @@ public class Fichier {
         }
     }
     
-    private static Reclamation [] obtTabReclam(JSONArray tabJSON){
+    private static Reclamation [] obtTabReclam(JSONArray tabJSON) 
+            throws Exception{
         Reclamation [] tabReclam = null;
             
         //Boucle sur les réclamations trouvées
@@ -129,7 +123,7 @@ public class Fichier {
     */   
     public void ecrireErreur(String nomFichierSortie) throws IOException {
         JSONObject jsonObj = new JSONObject();
-        jsonObj.accumulate("message", "Données invalides");
+        jsonObj.accumulate(CLES[MSG], MSG_ERREUR);
          Utf8File.saveStringIntoFile(nomFichierSortie, jsonObj.toString(4));
     }
     
