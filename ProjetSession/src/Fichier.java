@@ -1,5 +1,6 @@
 import java.io.IOException;
 import net.sf.json.JSONArray;
+import net.sf.json.JSONException;
 import net.sf.json.JSONObject;
 import net.sf.json.JSONSerializer;
 /**
@@ -31,15 +32,25 @@ public class Fichier {
    * @param nomFichierEntrer Le nom du fichier à lire
    * @return Dossier Retourne l'objet Dossier.
    */
-    public static Dossier lire(String nomFichierEntrer){
-        JSONObject racine = fichierEnObjJSON(nomFichierEntrer);
+    public static Dossier lire(String nomFichierEntrer, String nomFichierSortie){
         try {                    
-            return new Dossier(racine.getString(CLES[DOSS]), racine.getString(
-                    CLES[MOIS]),obtTabReclam(racine.getJSONArray(CLES[RECL])),
-                    null, null);
+            return lire(nomFichierEntrer);
+        } catch (JSONException je) {
+            ecrireErreur(nomFichierSortie, je.getMessage());
+            System.exit(1);
+            return null;
         } catch (Exception e) {
             return null;
         }
+    }
+    
+    private static Dossier lire(String nomFichierEntrer) 
+            throws JSONException, Exception {
+        JSONObject racine = fichierEnObjJSON(nomFichierEntrer);
+        
+        return new Dossier(racine.getString(CLES[DOSS]), racine.getString(
+                CLES[MOIS]),obtTabReclam(racine.getJSONArray(CLES[RECL])),
+                null, null);
     }
     
     private static JSONObject fichierEnObjJSON(String nomFichierEntrer){
@@ -47,13 +58,12 @@ public class Fichier {
             //Lire fichier et convertir en JSONObject
             String textJson = Utf8File.loadFileIntoString(nomFichierEntrer);
             return (JSONObject) JSONSerializer.toJSON(textJson);
-        }catch(Exception ex){
+        }catch(IOException ioe){
             return null;
         }
     }
     
-    private static Reclamation [] obtTabReclam(JSONArray tabJSON) 
-            throws Exception{
+    private static Reclamation [] obtTabReclam(JSONArray tabJSON) throws Exception {
         Reclamation [] tabReclam = null;
             
         //Boucle sur les réclamations trouvées
@@ -66,13 +76,11 @@ public class Fichier {
         return tabReclam;
     }
     
-    private static  Reclamation obtReclam(JSONObject objJSON){
-        try{
-            return new Reclamation(objJSON.getString(CLES[SOIN]),
-                    objJSON.getString(CLES[DATE]), objJSON.getString(CLES[MONT]));
-        }catch(Exception ex){
-            return null;
-        }
+    private static  Reclamation obtReclam(JSONObject objJSON) 
+            throws JSONException, Exception {
+        return new Reclamation(objJSON.getString(CLES[SOIN]),
+                objJSON.getString(CLES[DATE]), 
+                objJSON.getString(CLES[MONT]));
     }
     
    /**
@@ -80,8 +88,7 @@ public class Fichier {
    * @param nomFichierSortie Le nom du fichier à écrire
    * @param dossier L'objet Dossier
    */
-    public static void ecrire(String nomFichierSortie, Dossier dossier) 
-            throws IOException {
+    public static void ecrire(String nomFichierSortie, Dossier dossier) {
         JSONObject racine = new JSONObject();
         if (dossier != null) {
             racine.accumulate(CLES[DOSS], dossier.getDossierClient());
@@ -89,7 +96,7 @@ public class Fichier {
             racine.accumulate(CLES[REMB], obtTabJSONRemb(dossier.getRemboursements()));
             racine.accumulate(CLES[TOT], dossier.getTotal());
         }
-        Utf8File.saveStringIntoFile(nomFichierSortie, racine.toString(4));
+        objJSONEnFichier(nomFichierSortie, racine);
     }
     
     private static JSONArray obtTabJSONRemb(Remboursement [] tabRemb){
@@ -121,10 +128,22 @@ public class Fichier {
     * Écrit une erreur dans le fichier .json passé en paramètre.
     * @param nomFichierSortie Le nom du fichier à écrire
     */   
-    public void ecrireErreur(String nomFichierSortie) throws IOException {
+    public static void ecrireErreur(String nomFichierSortie, String msgErr) {
+        if (msgErr == null || msgErr.isEmpty())
+            msgErr = MSG_ERREUR;
+        
         JSONObject jsonObj = new JSONObject();
-        jsonObj.accumulate(CLES[MSG], MSG_ERREUR);
-         Utf8File.saveStringIntoFile(nomFichierSortie, jsonObj.toString(4));
+        jsonObj.accumulate(CLES[MSG], msgErr);
+         objJSONEnFichier(nomFichierSortie, jsonObj);
+    }
+    
+    private static void objJSONEnFichier(String nomFichierSortie,
+            JSONObject objJSON) {
+        try {
+            Utf8File.saveStringIntoFile(nomFichierSortie, objJSON.toString(4));
+        } catch (IOException ioe) {
+            System.out.println("Erreur avec le fichier de sortie !");
+        }
     }
     
     

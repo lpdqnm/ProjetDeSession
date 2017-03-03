@@ -23,21 +23,17 @@ public class Main {
             ficEntree = "inputFileDDC1.json";//test
             ficSortie = "outputFileDDC1.json";//test
             
-            dossier = Fichier.lire(ficEntree);
+            dossier = Fichier.lire(ficEntree, ficSortie);
             System.out.println(dossier);//test
-            
+        try {            
             //Test Fichier.ecrire()
-            try {
-                dossier.setRemboursements(obtTabRemb(dossier));
-                dossier.setTotal("test-total");//test
-                System.out.println(dossier);//test
-            
-                Fichier.ecrire(ficSortie, dossier);
-            } catch (IOException ex) {
-            
-            } catch (Exception ex) {
-            
-            }
+            dossier.setRemboursements(obtTabRemb(dossier));
+        } catch (Exception ex) {
+        }
+            dossier.setTotal("test-total");//test
+            System.out.println(dossier);//test
+
+            Fichier.ecrire(ficSortie, dossier);
 
 //            if (dossier != null && dossier.estValide()) {
 //                reclamations = dossier.getReclamations();
