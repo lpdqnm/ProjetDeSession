@@ -1,4 +1,4 @@
-
+package ProjetSession;
 /**
  * Classe de constantes pour les types de Soin
  *

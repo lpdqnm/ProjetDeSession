@@ -1,5 +1,4 @@
-
-import java.io.IOException;
+package ProjetSession;
 
 /**
  * Classe principal de l'application
