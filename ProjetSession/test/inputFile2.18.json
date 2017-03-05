@@ -1,10 +1,9 @@
 {
-    "client": "A100323",	
-    "mois": "2017-01",
+    "dossier": "A100323",
     "reclamations":     [
                 {
             "soin": "100",
-            
+            "date": "2017-01-11",
             "montant": "58.50$"
         },
                 {
