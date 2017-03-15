@@ -9,6 +9,7 @@ import java.util.Arrays;
  */
 public class Dossier {
 
+    private static final String DOLLARS = "$";
     private final String dossierClient;
     private String numeroClient;
     private String contrat;
@@ -45,11 +46,19 @@ public class Dossier {
 
     private boolean estValideNumeroClient() {
         this.erreur = "Le numéro du client est invalide.";
+        /*
+            Regex
+                Doit contenir exactement 6 chiffres
+        */
         return this.numeroClient.matches("[0-9]{6}");
     }
 
     private boolean estValideContrat() {
         this.erreur = "Le contrat du client est invalide.";
+        /*
+            Regex
+                Doit contenir une lettre entre A et E inclusivement
+        */
         return this.contrat.matches("[A-E]");
     }
 
@@ -86,16 +95,16 @@ public class Dossier {
     }
 
     public void setTotal() {
-        double total = 0;
+        int total = 0;
 
         try {
             for (int i = 0; i < this.remboursements.length; i++) {
-                total += Double.parseDouble(remboursements[i].getMontantSansFormat());
+                total += Dollar.StringVersInt((remboursements[i].getMontant()));
             }
         } catch (Exception e) {
         }
 
-        this.total = String.format("%.2f", total) + '$';
+        this.total = Dollar.IntVersString(total) + DOLLARS;
     }
 
     public void setRemboursements(Remboursement[] remboursements) {

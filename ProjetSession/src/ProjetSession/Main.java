@@ -44,10 +44,11 @@ public class Main {
     private static Remboursement[] obtTabRemb(Dossier dossier) throws Exception {
         Reclamation[] tabReclam = dossier.getReclamations();
         Remboursement[] tabRemb = new Remboursement[tabReclam.length];
+        Mensuelle mens = new Mensuelle();
 
         for (int i = 0; i < tabRemb.length; i++) {
             tabRemb[i] = new Remboursement(dossier.getContrat(), tabReclam[i].getSoin(),
-                    tabReclam[i].getDate(), tabReclam[i].getMontant());
+                    tabReclam[i].getDate(), tabReclam[i].getMontant(), mens);
         }
 
         return tabRemb;

@@ -18,8 +18,8 @@ public class MainDev {
 //            ficEntree = args[0];
 //            ficSortie = args[1];
         //Test Fichier.lire()
-        ficEntree = "inputFileDDC1.json";//test
-        ficSortie = "outputFileDDC1.json";//test
+        ficEntree = "inputFile4.1.json";//test
+        ficSortie = "outputFile4.1.json";//test
 
         dossier = Fichier.lire(ficEntree, ficSortie);
 
@@ -78,10 +78,11 @@ public class MainDev {
     private static Remboursement[] obtTabRemb(Dossier dossier) throws Exception {
         Reclamation[] tabReclam = dossier.getReclamations();
         Remboursement[] tabRemb = new Remboursement[tabReclam.length];
-
+        Mensuelle mens = new Mensuelle();
+        
         for (int i = 0; i < tabRemb.length; i++) {
             tabRemb[i] = new Remboursement(dossier.getContrat(), tabReclam[i]
-                    .getSoin(), tabReclam[i].getDate(), tabReclam[i].getMontant());
+                    .getSoin(), tabReclam[i].getDate(), tabReclam[i].getMontant(), mens);
         }
 
         return tabRemb;
