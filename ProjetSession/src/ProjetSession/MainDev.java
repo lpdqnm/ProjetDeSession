@@ -12,7 +12,7 @@ public class MainDev {
         String ficEntree;
         String ficSortie;
         Dossier dossier;
-
+        Statistiques.afficherStats();
 //        try {
 //            estValideNbrArgs(args);
 //            ficEntree = args[0];
