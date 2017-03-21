@@ -92,6 +92,7 @@ public class Statistiques {
         statReclamValides = 0;
         statReclamRejetees = 0;
         statsSoins = new int[SOINS_NO.length];
+        System.out.println("Les statisques ont été réinitialisées avec succès.");
     }
     
     protected void majStatsSoins(Dossier dossier){

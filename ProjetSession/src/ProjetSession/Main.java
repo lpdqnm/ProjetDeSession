@@ -12,34 +12,51 @@ public class Main {
         String ficEntree;
         String ficSortie;
         Dossier dossier;
-
+        
+        Fichier.lireStats("statistiques.json");
+        
         try {
             estValideNbrArgs(args);
+            
+            lesStatistiques(args);
+            
             ficEntree = args[0];
             ficSortie = args[1];
             dossier = Fichier.lire(ficEntree, ficSortie);
 
-            if (!dossier.estValide()) {
-                Fichier.ecrireErreur(ficSortie, dossier.getErreur());
-                System.exit(1);
-            }
-
+            estValideDossier(dossier, ficSortie);
+            
+            new Statistiques(dossier);
+            
             dossier.setRemboursements(obtTabRemb(dossier));
             dossier.setTotal();
 
             Fichier.ecrire(ficSortie, dossier);
         } catch (Exception ex) {
         }
+        
+        Fichier.ecrireStats("statistiques.json");
+
     }
 
     public static void estValideNbrArgs(String[] args) throws Exception {
-        if (args.length != 2) {
+        if (args.length != 2 && args.length != 1) {
             System.out.println("Erreur avec le nombre de paramètres.");
             System.out.println("Vous devez avoir 2 paramètres.");
             System.out.println("<FICHIERENTREE> <FICHIERSORTIE>");
+            System.out.println("OU");
+            System.out.println("Vous devez avoir 1 paramètre.");
+            System.out.println("-S (pour afficher les statistiques) ou -SR"
+                    + " (pour réinitialiser les statistiques)");
             System.exit(1);
         }
     }
+    
+    public static void estValideDossier(Dossier dossier, String ficSortie) throws Exception {
+            if (!dossier.estValide()) {
+                Fichier.ecrireErreur(ficSortie, dossier.getErreur());
+            }
+        }
 
     private static Remboursement[] obtTabRemb(Dossier dossier) throws Exception {
         Reclamation[] tabReclam = dossier.getReclamations();
@@ -52,5 +69,23 @@ public class Main {
         }
 
         return tabRemb;
+    }
+    
+    private static void lesStatistiques(String [] args){
+        String arg;
+        if (args.length == 1) {
+            arg = args[0];
+            if (arg.equalsIgnoreCase("-S")) {
+                Statistiques.afficherStats();
+            } else if (arg.equalsIgnoreCase("-SR")) {
+                Statistiques.reinitStats();
+                Fichier.ecrireStats("statistiques.json");
+            } else {
+            System.out.println("Erreur avec le paramètre.");
+            System.out.println("Entrer -S (pour afficher les statistiques) ou -SR"
+                    + " (pour réinitialiser les statistiques)");
+            }
+            System.exit(1);
+        }
     }
 }

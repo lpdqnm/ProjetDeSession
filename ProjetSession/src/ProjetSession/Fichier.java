@@ -37,7 +37,6 @@ public class Fichier {
             return lire(nomFichierEntrer);
         } catch (JSONException je) {
             ecrireErreur(nomFichierSortie, je.getMessage());
-            System.exit(1);
             return null;
         } catch (Exception e) {
             return null;
@@ -148,6 +147,7 @@ public class Fichier {
         JSONObject jsonObj = new JSONObject();
         jsonObj.accumulate(CLES[MSG], msgErr);
         objJSONEnFichier(nomFichierSortie, jsonObj);
+        System.exit(1);
     }
 
     private static void objJSONEnFichier(String nomFichierSortie, JSONObject objJSON) {
@@ -156,6 +156,49 @@ public class Fichier {
         } catch (IOException ioe) {
             System.out.println("Erreur avec le fichier de sortie !");
         }
+    }
+    
+    public static void lireStats(String fichierStats) {
+        JSONObject racine = fichierEnObjJSON(fichierStats);
+        
+        try {
+            Statistiques.initStats(racine.getInt(Statistiques.RECLAMATIONS_VALIDES),
+                    racine.getInt(Statistiques.RECLAMATIONS_REJETEES),
+                    obtTabStatsSoins(racine.getJSONArray(Statistiques.SOINS)));
+        } catch (Exception e) {
+            Statistiques.initStats(0, 0, new int [Statistiques.SOINS_NO.length]);
+        }
+    }
+    
+    protected static int [] obtTabStatsSoins(JSONArray tabJSON) throws Exception{
+        int [] tabStatsSoins = new int[tabJSON.size()];
+        
+        for (int i = 0; i < tabStatsSoins.length; i++) {
+            tabStatsSoins[i] = tabJSON.getJSONObject(i).getInt("" + Statistiques.SOINS_NO[i]);
+        }
+        return tabStatsSoins;
+    }
+    
+    public static void ecrireStats(String fichierStats){
+        JSONObject racine = new JSONObject();
+        
+        racine.accumulate(Statistiques.RECLAMATIONS_VALIDES, Statistiques.getStatReclamValides());
+        racine.accumulate(Statistiques.RECLAMATIONS_REJETEES, Statistiques.getStatReclamRejetees());
+        racine.accumulate(Statistiques.SOINS, obtTabJSONSoins(Statistiques.getStatsSoins()));
+        
+        objJSONEnFichier(fichierStats, racine);
+    }
+    
+    protected static JSONArray obtTabJSONSoins(int [] tabStatsSoins) {
+        JSONArray tabObjJSON = new JSONArray();
+        JSONObject objJSON;
+        
+        for (int i = 0; i < tabStatsSoins.length; i++) {
+            objJSON = new JSONObject();
+            objJSON.accumulate("" + Statistiques.SOINS_NO[i], tabStatsSoins[i]);
+            tabObjJSON.add(objJSON);
+        }
+        return tabObjJSON;
     }
 
 }
