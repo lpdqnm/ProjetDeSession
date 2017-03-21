@@ -88,6 +88,12 @@ public class Statistiques {
         return statsSoins;
     }
     
+    public static void reinitStats(){
+        statReclamValides = 0;
+        statReclamRejetees = 0;
+        statsSoins = new int[SOINS_NO.length];
+    }
+    
     protected void majStatsSoins(Dossier dossier){
         int soinNo;
         int index;
@@ -120,12 +126,13 @@ public class Statistiques {
         return -1;
     }
     
-    public static void afficherStats(){
+    public static void afficherStats(){        
         afficherEntete(EN_TETE_1_TAB, EN_TETE_2_TAB);
         System.out.printf(PRINT_FORMAT, RECLAMATIONS_VALIDES, statReclamValides);
         System.out.printf(PRINT_FORMAT, RECLAMATIONS_REJETEES, statReclamRejetees);
+        
         afficherEntete(EN_TETE_3_TAB, EN_TETE_2_TAB);
-
+       afficherStatsSoins();
     }
     
     protected static void afficherEntete(String chaine1, String chaine2){
@@ -134,12 +141,19 @@ public class Statistiques {
         System.out.println(TRAIT_HORIZONTAL);
     }
     
-    protected static void afficherStatsSoins(){
+    protected static void afficherStatsSoins() {
+        String soinNoI;
+
         for (int i = 0; i < SOINS_CATEGORIE.length; i++) {
-            String string = SOINS_CATEGORIE[i];
             
-            
-        }
+            if (SOINS_NO[i] == Soin.MIN_SOIN_DENTAIRE) {
+                soinNoI = Soin.MIN_SOIN_DENTAIRE + "..." + Soin.MAX_SOIN_DENTAIRE;
+            } else {
+                soinNoI = "" + SOINS_NO[i];
+            }
+            System.out.printf(PRINT_FORMAT, SOINS_CATEGORIE[i] + PARENTHESES[0] + soinNoI
+                    + PARENTHESES[1],statsSoins[i]);
+        } 
     }
     
 }
