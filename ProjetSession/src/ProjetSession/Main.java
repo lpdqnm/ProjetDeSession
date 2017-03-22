@@ -26,10 +26,11 @@ public class Main {
 
             estValideDossier(dossier, ficSortie);
             
-            new Statistiques(dossier);
-            
             dossier.setRemboursements(obtTabRemb(dossier));
             dossier.setTotal();
+            
+            Statistiques.majStatReclamValides(dossier);
+            Statistiques.majStatsSoins(dossier);
 
             Fichier.ecrire(ficSortie, dossier);
         } catch (Exception ex) {
@@ -54,6 +55,9 @@ public class Main {
     
     public static void estValideDossier(Dossier dossier, String ficSortie) throws Exception {
             if (!dossier.estValide()) {
+                Statistiques.majStatReclamRejetees(dossier);
+                Statistiques.majStatsSoins(dossier);
+                Fichier.ecrireStats("statistiques.json");
                 Fichier.ecrireErreur(ficSortie, dossier.getErreur());
             }
         }
