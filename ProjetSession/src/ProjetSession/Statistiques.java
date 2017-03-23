@@ -61,14 +61,7 @@ public class Statistiques {
 
     public Statistiques() {
     }
-
-    public Statistiques(Dossier dossier) {
-        statReclamValides += dossier.getRemboursements().length;
-        statReclamRejetees += dossier.getReclamations().length
-                - statReclamValides;
-        majStatsSoins(dossier);
-    }
-
+    
     public static void initStats(int statReclamValidesInit, int statReclamRejeteesInit,
             int[] statsSoinsInit){
         statReclamValides = statReclamValidesInit;
@@ -76,6 +69,14 @@ public class Statistiques {
         statsSoins = statsSoinsInit;
     }
     
+    public static void majStatReclamRejetees(Dossier dossier){
+        statReclamRejetees += dossier.getReclamations().length;
+    }
+    
+    public static void majStatReclamValides(Dossier dossier){
+        statReclamValides += dossier.getReclamations().length;
+    }
+
     public static int getStatReclamValides() {
         return statReclamValides;
     }
@@ -95,7 +96,7 @@ public class Statistiques {
         System.out.println("Les statisques ont été réinitialisées avec succès.");
     }
     
-    protected void majStatsSoins(Dossier dossier){
+    protected static void majStatsSoins(Dossier dossier){
         int soinNo;
         int index;
         Reclamation [] reclamations = dossier.getReclamations();
@@ -109,14 +110,14 @@ public class Statistiques {
         }
     }
     
-    protected int soinDentaireNoMin(int soinNo){
+    protected static int soinDentaireNoMin(int soinNo){
         if (soinNo >= Soin.MIN_SOIN_DENTAIRE && soinNo <= Soin.MAX_SOIN_DENTAIRE) {
                 return Soin.MIN_SOIN_DENTAIRE;
         }
         return soinNo;
     }
     
-    protected int obtIndexSoinNo(int soinNo){
+    protected static int obtIndexSoinNo(int soinNo){
         int i = 0;
         while (i < SOINS_NO.length) {
             if (SOINS_NO[i] == soinNo) {

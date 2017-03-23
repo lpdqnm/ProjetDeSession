@@ -45,10 +45,8 @@ public class Main {
             System.out.println("Erreur avec le nombre de paramètres.");
             System.out.println("Vous devez avoir 2 paramètres.");
             System.out.println("<FICHIERENTREE> <FICHIERSORTIE>");
-            System.out.println("OU");
-            System.out.println("Vous devez avoir 1 paramètre.");
-            System.out.println("-S (pour afficher les statistiques) ou -SR"
-                    + " (pour réinitialiser les statistiques)");
+            System.out.println("OU\nVous devez avoir 1 paramètre.\n-S (pour afficher les "
+                    + "statistiques) ou -SR (pour réinitialiser les statistiques)");
             System.exit(1);
         }
     }
@@ -76,18 +74,15 @@ public class Main {
     }
     
     private static void lesStatistiques(String [] args){
-        String arg;
         if (args.length == 1) {
-            arg = args[0];
-            if (arg.equalsIgnoreCase("-S")) {
+            if (args[0].equalsIgnoreCase("-S")) {
                 Statistiques.afficherStats();
-            } else if (arg.equalsIgnoreCase("-SR")) {
+            } else if (args[0].equalsIgnoreCase("-SR")) {
                 Statistiques.reinitStats();
                 Fichier.ecrireStats("statistiques.json");
             } else {
-            System.out.println("Erreur avec le paramètre.");
-            System.out.println("Entrer -S (pour afficher les statistiques) ou -SR"
-                    + " (pour réinitialiser les statistiques)");
+            System.out.println("Erreur avec le paramètre.\nEntrer -S (pour afficher les "
+                    + "statistiques) ou -SR (pour réinitialiser les statistiques)");
             }
             System.exit(1);
         }
