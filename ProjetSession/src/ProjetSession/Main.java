@@ -8,21 +8,28 @@ package ProjetSession;
  */
 public class Main {
 
+    public static final String FICHIER_STATS = "statistiques.json";
+    public static final String MSG_ERR_AGRS = "Erreur avec le nombre de paramètres."
+            + "\nVous devez avoir 2 paramètres."
+            + "\n<FICHIERENTREE> <FICHIERSORTIE>"
+            + "\nOU"
+            + "\nVous devez avoir 1 paramètre."
+            + "\n-S (pour afficher les statistiques) ou -SR (pour réinitialiser les statistiques)";
+    public static final String MSG_ERR_STATS = "Erreur avec le paramètre."
+            + "\nEntrer -S (pour afficher les statistiques) ou -SR (pour "
+            + "réinitialiser les statistiques)";
+    
     public static void main(String[] args) {
-        String ficEntree;
-        String ficSortie;
-        Dossier dossier;
-        
-        Fichier.lireStats("statistiques.json");
+        Fichier.lireStats(FICHIER_STATS);
         
         try {
             estValideNbrArgs(args);
             
-            lesStatistiques(args);
+            estValideStatistiques(args);
             
-            ficEntree = args[0];
-            ficSortie = args[1];
-            dossier = Fichier.lire(ficEntree, ficSortie);
+            String ficEntree = args[0];
+            String ficSortie = args[1];
+            Dossier dossier = Fichier.lire(ficEntree, ficSortie);
 
             estValideDossier(dossier, ficSortie);
             
@@ -36,17 +43,13 @@ public class Main {
         } catch (Exception ex) {
         }
         
-        Fichier.ecrireStats("statistiques.json");
-
+        Fichier.ecrireStats(FICHIER_STATS);
     }
 
     public static void estValideNbrArgs(String[] args) throws Exception {
         if (args.length != 2 && args.length != 1) {
-            System.out.println("Erreur avec le nombre de paramètres.");
-            System.out.println("Vous devez avoir 2 paramètres.");
-            System.out.println("<FICHIERENTREE> <FICHIERSORTIE>");
-            System.out.println("OU\nVous devez avoir 1 paramètre.\n-S (pour afficher les "
-                    + "statistiques) ou -SR (pour réinitialiser les statistiques)");
+            System.out.println(MSG_ERR_AGRS);
+            
             System.exit(1);
         }
     }
@@ -54,8 +57,7 @@ public class Main {
     public static void estValideDossier(Dossier dossier, String ficSortie) throws Exception {
             if (!dossier.estValide()) {
                 Statistiques.majStatReclamRejetees(dossier);
-                Statistiques.majStatsSoins(dossier);
-                Fichier.ecrireStats("statistiques.json");
+                Fichier.ecrireStats(FICHIER_STATS);
                 Fichier.ecrireErreur(ficSortie, dossier.getErreur());
             }
         }
@@ -73,18 +75,23 @@ public class Main {
         return tabRemb;
     }
     
-    private static void lesStatistiques(String [] args){
+    private static void estValideStatistiques(String [] args){
         if (args.length == 1) {
-            if (args[0].equalsIgnoreCase("-S")) {
-                Statistiques.afficherStats();
-            } else if (args[0].equalsIgnoreCase("-SR")) {
-                Statistiques.reinitStats();
-                Fichier.ecrireStats("statistiques.json");
-            } else {
-            System.out.println("Erreur avec le paramètre.\nEntrer -S (pour afficher les "
-                    + "statistiques) ou -SR (pour réinitialiser les statistiques)");
-            }
+            
+            lesStatistiques(args[0]);
+            
             System.exit(1);
         }
+    }
+    
+    private static void lesStatistiques(String arg){
+            if (arg.equalsIgnoreCase("-S")) {
+                Statistiques.afficherStats();
+            } else if (arg.equalsIgnoreCase("-SR")) {
+                Statistiques.reinitStats();
+                Fichier.ecrireStats(FICHIER_STATS);
+            } else {
+                System.out.println(MSG_ERR_STATS);
+            }
     }
 }

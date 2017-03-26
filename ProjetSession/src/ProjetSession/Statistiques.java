@@ -98,19 +98,21 @@ public class Statistiques {
     
     protected static void majStatsSoins(Dossier dossier){
         int soinNo;
-        int index;
         Reclamation [] reclamations = dossier.getReclamations();
         
         for (int i = 0; i < reclamations.length; i++) {
             soinNo = soinDentaireNoMin(Integer.parseInt(reclamations[i].getSoin()));
-            index = obtIndexSoinNo(soinNo);
-            if (index >= 0) {
-                statsSoins[index]++;
+            
+            if (obtIndexSoinNo(soinNo) >= 0) {
+                statsSoins[obtIndexSoinNo(soinNo)]++;
             }
         }
     }
     
     protected static int soinDentaireNoMin(int soinNo){
+        //Permet de simulier un numéro de soin unique (MIN_SOIN_DENTAIRE) pour tous les soins
+        //dentaires, afin de mettre à jour les statistiques des soins dentaires dans le tableau
+        //statsSoins
         if (soinNo >= Soin.MIN_SOIN_DENTAIRE && soinNo <= Soin.MAX_SOIN_DENTAIRE) {
                 return Soin.MIN_SOIN_DENTAIRE;
         }
@@ -144,18 +146,21 @@ public class Statistiques {
     }
     
     protected static void afficherStatsSoins() {
-        String soinNoI;
 
         for (int i = 0; i < SOINS_CATEGORIE.length; i++) {
             
-            if (SOINS_NO[i] == Soin.MIN_SOIN_DENTAIRE) {
-                soinNoI = Soin.MIN_SOIN_DENTAIRE + "..." + Soin.MAX_SOIN_DENTAIRE;
-            } else {
-                soinNoI = "" + SOINS_NO[i];
-            }
-            System.out.printf(PRINT_FORMAT, SOINS_CATEGORIE[i] + PARENTHESES[0] + soinNoI
-                    + PARENTHESES[1],statsSoins[i]);
+            System.out.printf(PRINT_FORMAT, SOINS_CATEGORIE[i] + PARENTHESES[0]
+                    + obtIntervalleSoinsDentaires(SOINS_NO[i]) + PARENTHESES[1],statsSoins[i]);
         } 
+    }
+    
+    protected static String obtIntervalleSoinsDentaires(int soinNoI) {
+        //Met en String le No de soin et restore l'intervalle des soins dentaires pour l'affichage
+        if (soinNoI == Soin.MIN_SOIN_DENTAIRE) {
+               return Soin.MIN_SOIN_DENTAIRE + "..." + Soin.MAX_SOIN_DENTAIRE;
+            } else {
+                return "" + soinNoI;
+            }
     }
     
 }
