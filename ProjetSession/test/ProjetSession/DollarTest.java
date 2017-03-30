@@ -1,4 +1,4 @@
-package Test;
+package ProjetSession;
 
 import ProjetSession.Dollar;
 import static org.junit.Assert.assertEquals;

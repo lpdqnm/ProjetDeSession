@@ -84,6 +84,7 @@ public class TraitementPrincipal {
 
     private static void lesStatistiques(String arg) {
         if (arg.equals("-S")) {
+            Fichier.ecrireStats(FICHIER_STATS);
             Statistiques.afficherStats();
         } else if (arg.equals("-SR")) {
             Statistiques.reinitStats();
