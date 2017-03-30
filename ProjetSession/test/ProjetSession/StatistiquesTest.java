@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package ProjetSession;
 
 import org.junit.Before;
@@ -16,9 +11,6 @@ import static org.junit.Assert.*;
  */
 public class StatistiquesTest {
     
-    public StatistiquesTest() {
-    }
-    //Varialble d'instance
     Statistiques instance;
     
     @Before
@@ -26,20 +18,7 @@ public class StatistiquesTest {
         instance = new Statistiques();
     } 
     
-    /**
-     * Test of majStatsSoins method, of class Statistiques.
-     */
-//    @Test
-//    public void testMajStatsSoins() {
-//        System.out.println("majStatsSoins");
-//        Dossier dossier = null;
-//        Statistiques instance = null;
-//        instance.majStatsSoins(dossier);
-//    }
-
-    /**
-     * Test of soinDentaireNoMin method, of class Statistiques.
-     */
+    // Test sur fonction : soinDentaireNoMin
     @Test
     public void testSoinDentaireNoMin() {
         System.out.println("soinDentaireNoMin");
@@ -49,9 +28,7 @@ public class StatistiquesTest {
         assertEquals(expResult, result);
     }
 
-    /**
-     * Test of obtIndexSoinNo method, of class Statistiques.
-     */
+    // Test sur fonction : obtIndexSoinNo
     @Test
     public void testObtIndexSoinNo() {
         System.out.println("obtIndexSoinNo");
@@ -61,15 +38,10 @@ public class StatistiquesTest {
         assertEquals(expResult, result);
     }
 
-    /**
-     * Test of afficherStats method, of class Statistiques.
-     */
+    // Test sur fonction : afficherStats
     @Test
     public void testAfficherStats() {
         System.out.println("afficherStats");
         Statistiques.afficherStats();
-        // TODO review the generated test code and remove the default call to fail.
-        //fail("The test case is a prototype.");
-    }
-    
+    }   
 }

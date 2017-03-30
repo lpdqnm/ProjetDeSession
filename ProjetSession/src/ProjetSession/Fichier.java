@@ -1,4 +1,5 @@
 package ProjetSession;
+
 import java.io.IOException;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONException;
@@ -26,12 +27,6 @@ public class Fichier {
     public static final int MSG = 8;
     public static String MSG_ERREUR = "Données invalides";
 
-    /**
-     * Lit un fichier .json et retourne l'objet Dossier
-     *
-     * @param nomFichierEntrer Le nom du fichier à lire
-     * @return Dossier Retourne l'objet Dossier.
-     */
     public static Dossier lire(String nomFichierEntrer, String nomFichierSortie) {
         try {
             return lire(nomFichierEntrer);
@@ -45,8 +40,8 @@ public class Fichier {
 
     private static Dossier lire(String nomFichierEntrer) throws JSONException, Exception {
         JSONObject racine = fichierEnObjJSON(nomFichierEntrer);
-        
-        if (racine == null){
+
+        if (racine == null) {
             System.out.println("Fichier d'entrée introuvable!");
             System.exit(1);
         }
@@ -85,12 +80,6 @@ public class Fichier {
                 objJSON.getString(CLES[MONT]));
     }
 
-    /**
-     * Écrit le résultat de l'objet dossier dans un fichier .json
-     *
-     * @param nomFichierSortie Le nom du fichier à écrire
-     * @param dossier L'objet Dossier
-     */
     public static void ecrire(String nomFichierSortie, Dossier dossier) {
         JSONObject racine = new JSONObject();
 
@@ -134,11 +123,6 @@ public class Fichier {
         return objJSON;
     }
 
-    /**
-     * Écrit une erreur dans le fichier .json passé en paramètre.
-     *
-     * @param nomFichierSortie Le nom du fichier à écrire
-     */
     public static void ecrireErreur(String nomFichierSortie, String msgErr) {
         if (msgErr == null || msgErr.isEmpty()) {
             msgErr = MSG_ERREUR;
@@ -157,42 +141,42 @@ public class Fichier {
             System.out.println("Erreur avec le fichier de sortie !");
         }
     }
-    
+
     public static void lireStats(String fichierStats) {
         JSONObject racine = fichierEnObjJSON(fichierStats);
-        
+
         try {
             Statistiques.initStats(racine.getInt(Statistiques.RECLAMATIONS_VALIDES),
                     racine.getInt(Statistiques.RECLAMATIONS_REJETEES),
                     obtTabStatsSoins(racine.getJSONArray(Statistiques.SOINS)));
         } catch (Exception e) {
-            Statistiques.initStats(0, 0, new int [Statistiques.SOINS_NO.length]);
+            Statistiques.initStats(0, 0, new int[Statistiques.SOINS_NO.length]);
         }
     }
-    
-    protected static int [] obtTabStatsSoins(JSONArray tabJSON) throws Exception{
-        int [] tabStatsSoins = new int[tabJSON.size()];
-        
+
+    protected static int[] obtTabStatsSoins(JSONArray tabJSON) throws Exception {
+        int[] tabStatsSoins = new int[tabJSON.size()];
+
         for (int i = 0; i < tabStatsSoins.length; i++) {
             tabStatsSoins[i] = tabJSON.getJSONObject(i).getInt("" + Statistiques.SOINS_NO[i]);
         }
         return tabStatsSoins;
     }
-    
-    public static void ecrireStats(String fichierStats){
+
+    public static void ecrireStats(String fichierStats) {
         JSONObject racine = new JSONObject();
-        
+
         racine.accumulate(Statistiques.RECLAMATIONS_VALIDES, Statistiques.getStatReclamValides());
         racine.accumulate(Statistiques.RECLAMATIONS_REJETEES, Statistiques.getStatReclamRejetees());
         racine.accumulate(Statistiques.SOINS, obtTabJSONSoins(Statistiques.getStatsSoins()));
-        
+
         objJSONEnFichier(fichierStats, racine);
     }
-    
-    protected static JSONArray obtTabJSONSoins(int [] tabStatsSoins) {
+
+    protected static JSONArray obtTabJSONSoins(int[] tabStatsSoins) {
         JSONArray tabObjJSON = new JSONArray();
         JSONObject objJSON;
-        
+
         for (int i = 0; i < tabStatsSoins.length; i++) {
             objJSON = new JSONObject();
             objJSON.accumulate("" + Statistiques.SOINS_NO[i], tabStatsSoins[i]);

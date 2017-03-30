@@ -13,6 +13,7 @@ import org.junit.Test;
  */
 public class DollarTest {
     
+    // Tests sur la fonction : multiplication
     @Test 
     public void testMultiZeroSurMontant() {
         assertEquals(0, Dollar.multiplication(100, 0));
@@ -58,6 +59,7 @@ public class DollarTest {
         assertEquals(0, Dollar.multiplication(-550, 0.2));
     }
     
+    // Tests sur la fonction : IntVersString
     @Test 
     public void testIntVersStringZero() {
         assertEquals("0.00", Dollar.IntVersString(0));
@@ -78,6 +80,7 @@ public class DollarTest {
         assertEquals("0.00", Dollar.IntVersString(-7555));
     }
     
+    // Tests sur la fonction : StringVersInt
     @Test 
     public void testStringVersIntSansDollar() {
         assertEquals(550, Dollar.StringVersInt("5.5"));

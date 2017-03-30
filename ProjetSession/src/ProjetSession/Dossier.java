@@ -1,4 +1,5 @@
 package ProjetSession;
+
 import java.util.Arrays;
 
 /**
@@ -49,7 +50,7 @@ public class Dossier {
         /*
             Regex
                 Doit contenir exactement 6 chiffres
-        */
+         */
         return this.numeroClient.matches("[0-9]{6}");
     }
 
@@ -58,7 +59,7 @@ public class Dossier {
         /*
             Regex
                 Doit contenir une lettre entre A et E inclusivement
-        */
+         */
         return this.contrat.matches("[A-E]");
     }
 

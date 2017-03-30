@@ -1,4 +1,5 @@
 package ProjetSession;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 
@@ -36,6 +37,9 @@ public class Reclamation {
             return false;
         }
 
+        /**
+         * Retourne vrai numéro du soin est dans les soins qu'on a de disponible
+         */
         return iSoin == Soin.CHIROPRATIE || iSoin == Soin.MASSOTHERAPIE
                 || (iSoin >= Soin.MIN_SOIN_DENTAIRE
                 && iSoin <= Soin.MAX_SOIN_DENTAIRE)
@@ -57,34 +61,24 @@ public class Reclamation {
         return this.montant.matches("[0-9]+([,.][0-9]{1,2})?[\\\\$]");
     }
 
-    /**
-     * Valide l'année et le mois de date de la demande vs la date de reclamation.
-     *
-     * @param DateDemande La date de la demande
-     * @return True si valide False sinon
-     */
     private boolean estValideDateReclamVsDateDemande(String DateDemande) {
         this.erreur = "Le mois de réclamation suivant : " + DateDemande.substring(0, 7)
                 + " ne correspond pas avec la date de réclamation suivante :  "
                 + this.date;
+        // L'année et le mois de la date de la demande est il égale à la date de reclamation.
         return this.date.substring(0, 7).equals(DateDemande.substring(0, 7));
     }
 
-    /**
-     * Valide le format de date ISO 8601 (YYYY-MM-DD)
-     *
-     * @param DateDemande
-     * @return
-     */
     private boolean estValideFormatDate(String DateDemande) {
-        this.erreur = "Le mois de réclamation suivant : " + DateDemande +" est invalide";
+        this.erreur = "Le mois de réclamation suivant : " + DateDemande + " est invalide";
+        // Valide le format de date ISO 8601 (YYYY-MM-DD)
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         sdf.setLenient(false);
 
         try {
             sdf.parse(this.date);
         } catch (ParseException e) {
-            this.erreur = "La date de réclamation suivante : " + this.date +" est invalide";
+            this.erreur = "La date de réclamation suivante : " + this.date + " est invalide";
             return false;
         }
 
