@@ -60,12 +60,12 @@ public class Statistiques {
         statsSoins = statsSoinsInit;
     }
 
-    public static void majStatReclamRejetees(Dossier dossier) {
-        statReclamRejetees += dossier.getReclamations().length;
+    public static void majStatReclamRejetees() {
+        statReclamRejetees += 1;
     }
 
-    public static void majStatReclamValides(Dossier dossier) {
-        statReclamValides += dossier.getReclamations().length;
+    public static void majStatReclamValides() {
+        statReclamValides += 1;
     }
 
     public static int getStatReclamValides() {

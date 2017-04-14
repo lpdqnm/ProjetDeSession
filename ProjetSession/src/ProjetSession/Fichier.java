@@ -1,5 +1,6 @@
 package ProjetSession;
 
+import static ProjetSession.TraitementPrincipal.FICHIER_STATS;
 import java.io.IOException;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONException;
@@ -131,6 +132,8 @@ public class Fichier {
         JSONObject jsonObj = new JSONObject();
         jsonObj.accumulate(CLES[MSG], msgErr);
         objJSONEnFichier(nomFichierSortie, jsonObj);
+        Statistiques.majStatReclamRejetees();
+        Fichier.ecrireStats(FICHIER_STATS);
         System.exit(1);
     }
 

@@ -11,6 +11,8 @@ import java.text.SimpleDateFormat;
  */
 public class Reclamation {
 
+    private static final String DOLLARS = "$";
+    private static final int MONTANT_MAXIMUM = 50000;
     private final String soin;
     private final String date;
     private final String montant;
@@ -24,7 +26,8 @@ public class Reclamation {
 
     public boolean estValide(String DateTraitement) {
         return estValideSoin() && estValideFormatDate(DateTraitement)
-                && estValideDateReclamVsDateDemande(DateTraitement) && estValideMontant();
+                && estValideDateReclamVsDateDemande(DateTraitement) && estValideMontant() 
+                && estValideMaxMontant();
     }
 
     private boolean estValideSoin() {
@@ -83,6 +86,14 @@ public class Reclamation {
         }
 
         return true;
+    }
+    
+    private boolean estValideMaxMontant(){
+        this.erreur = "Le montant de réclamation maximum est de " + 
+                Dollar.IntVersString(MONTANT_MAXIMUM) + DOLLARS +". "
+                + "Vous avez un montant de réclamation à " + this.montant +".";
+        
+        return Dollar.StringVersInt(this.montant) <= MONTANT_MAXIMUM;          
     }
 
     public String getSoin() {

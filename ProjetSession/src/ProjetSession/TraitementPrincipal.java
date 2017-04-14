@@ -36,27 +36,25 @@ public class TraitementPrincipal {
             dossier.setRemboursements(obtTabRemb(dossier));
             dossier.setTotal();
 
-            Statistiques.majStatReclamValides(dossier);
+            Statistiques.majStatReclamValides();
             Statistiques.majStatsSoins(dossier);
 
             Fichier.ecrire(ficSortie, dossier);
-        } catch (Exception ex) {
+        } catch (Exception ex) {   
         }
-
+        
         Fichier.ecrireStats(FICHIER_STATS);
     }
 
     public static void estValideNbrArgs(String[] args) throws Exception {
         if (args.length != 2 && args.length != 1) {
             System.out.println(MSG_ERR_AGRS);
-
             System.exit(1);
         }
     }
 
     public static void estValideDossier(Dossier dossier, String ficSortie) throws Exception {
         if (!dossier.estValide()) {
-            Statistiques.majStatReclamRejetees(dossier);
             Fichier.ecrireStats(FICHIER_STATS);
             Fichier.ecrireErreur(ficSortie, dossier.getErreur());
         }

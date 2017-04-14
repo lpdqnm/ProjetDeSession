@@ -22,7 +22,7 @@ public final class Dollar {
         }
 
         //Un montant en cents
-        montantFormat = (int) (montantReclame * 100);
+        montantFormat = (int) Math.round(montantReclame * 100);
 
         return montantFormat;
     }
@@ -49,7 +49,7 @@ public final class Dollar {
             montantEnCents = 0;
         }
 
-        dollar = (int) ((montantEnCents * multiplicateur) / 100);
+        dollar = (int) Math.round(((montantEnCents * multiplicateur) / 100));
         cents = (int) Math.round((montantEnCents * multiplicateur) % 100);
 
         return (dollar * 100) + cents;
