@@ -1,0 +1,16 @@
+
+- affichage pour les Statistiques : OK
+
+- arguments passés en paramètres
+	*2 arguments fichier d'entrée(existant déjà) et  fichier de sortie : OK
+	*1 argument, peu importe la casse, -S (affichage statistiques) ou -SR (réinitialisations des statistiques + message de confirmation) : OK
+	*1 argument autre que -S, -SR, -s, -sr, -sR et -Sr , message d'erreur : OK
+	*aucun argument, 3 arguments, message d'erreur : OK
+	*2 arguments -s et -sr, message d'erreur "Fichier d'entrée introuvable" : OK
+- calcule, mise à jour et affiche les statistiques
+	*dossier invalide : statistiques réclamations rejetées et aucune statistique pour soins déclarés par type : OK
+	*dossier valide : statistiques réclamations valides et soins déclarés par type : OK
+- ficher des statistiques
+	*initialisation des statistiques au lancement du logiciel avec un fichier json des statistiques sur disque : OK
+	*sauvegarde des statistiques : OK
+	*initialisation des statistiques à zéro au lancement du logiciel sans un fichier json des statistiques sur disque : OK

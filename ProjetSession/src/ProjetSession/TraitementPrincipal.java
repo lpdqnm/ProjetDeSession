@@ -10,53 +10,90 @@ public class TraitementPrincipal {
 
     public static final String FICHIER_STATS = "statistiques.json";
     public static final String MSG_ERR_AGRS = "Erreur avec le nombre de paramètres."
+            + "\nVous devez avoir 3 paramètres."
+            + "\n<FICHIERENTREE> <FICHIERSORTIE> -p (pour les traitements sans statistiques)"
+            + "\n               OU"
             + "\nVous devez avoir 2 paramètres."
             + "\n<FICHIERENTREE> <FICHIERSORTIE>"
-            + "\nOU"
+            + "\n               OU"
             + "\nVous devez avoir 1 paramètre."
             + "\n-S (pour afficher les statistiques) ou -SR (pour réinitialiser les statistiques)";
     public static final String MSG_ERR_STATS = "Erreur avec le paramètre."
             + "\nEntrer -S (pour afficher les statistiques) ou -SR (pour "
             + "réinitialiser les statistiques)";
+    public static final String MSG_ERR_ARG_P = "Erreur avec le paramètre -p."
+            + "\nVous devez avoir 3 paramètres."
+            + "\n<FICHIERENTREE> <FICHIERSORTIE> -p";
 
     public static void main(String[] args) {
-        Fichier.lireStats(FICHIER_STATS);
+        FichierLecture.lireStats(FICHIER_STATS);
 
         try {
-            estValideNbrArgs(args);
-
-            estValideStatistiques(args);
-
-            String ficEntree = args[0];
-            String ficSortie = args[1];
-            Dossier dossier = Fichier.lire(ficEntree, ficSortie);
-
-            estValideDossier(dossier, ficSortie);
-
-            dossier.setRemboursements(obtTabRemb(dossier));
-            dossier.setTotal();
-
-            Statistiques.majStatReclamValides();
-            Statistiques.majStatsSoins(dossier);
-
-            Fichier.ecrire(ficSortie, dossier);
-        } catch (Exception ex) {   
+            switch(args.length) {
+                case 1:
+                    lesStatistiques(args[0]);
+                    break;
+                case 2:
+                    traitementDossierStats(args);
+                    break;
+                case 3:
+                    traitementDossierPrediction(args);
+                    break;
+                default:
+                    nbrArgsInvalide(args);
+                    break;
+            }
+        } catch (Exception ex) {
         }
+
+        FichierEcriture.ecrireStats(FICHIER_STATS);
+    }
+    
+    public static void traitementDossierStats(String[] args)  throws Exception {
+        Dossier dossierTraite = traitementDossier(args);
         
-        Fichier.ecrireStats(FICHIER_STATS);
-    }
-
-    public static void estValideNbrArgs(String[] args) throws Exception {
-        if (args.length != 2 && args.length != 1) {
-            System.out.println(MSG_ERR_AGRS);
-            System.exit(1);
+        if (dossierTraite.estValide()) {
+            Statistiques.majStatReclamValides();
+            Statistiques.majStatsSoins(dossierTraite);
+        } else {
+            Statistiques.majStatReclamRejetees();
+            FichierEcriture.ecrireStats(FICHIER_STATS);
+            FichierEcriture.ecrireErreur(args[1], dossierTraite.getErreur());
         }
     }
-
-    public static void estValideDossier(Dossier dossier, String ficSortie) throws Exception {
+     
+    private static void traitementDossierPrediction(String[] args) throws Exception{
+        arg3IemeInvalide(args[2]);
+        
+        Dossier dossierTraite = traitementDossier(args);
+        
+        if (!dossierTraite.estValide()) {
+            FichierEcriture.ecrireStats(FICHIER_STATS);
+            FichierEcriture.ecrireErreur(args[1], dossierTraite.getErreur());
+        }
+    }
+    
+    private static Dossier traitementDossier(String[] args) throws Exception{
+        String ficEntree = args[0];
+        String ficSortie = args[1];
+        Dossier dossier = FichierLecture.lire(ficEntree, ficSortie);
+        
         if (!dossier.estValide()) {
-            Fichier.ecrireStats(FICHIER_STATS);
-            Fichier.ecrireErreur(ficSortie, dossier.getErreur());
+            return dossier;
+        }
+
+        dossier.setRemboursements(obtTabRemb(dossier));
+        dossier.setTotal();
+        
+        FichierEcriture.ecrire(ficSortie, dossier);
+        return dossier;
+    }
+           
+    public static void nbrArgsInvalide(String[] args) throws Exception {
+        if (args.length != 1 && args.length != 2 && args.length != 3) {
+            System.out.println(MSG_ERR_AGRS);
+
+            System.exit(1);
         }
     }
 
@@ -73,22 +110,23 @@ public class TraitementPrincipal {
         return tabRemb;
     }
 
-    private static void estValideStatistiques(String[] args) {
-        if (args.length == 1) {
-            lesStatistiques(args[0]);
-            System.exit(1);
-        }
-    }
-
     private static void lesStatistiques(String arg) {
         if (arg.equals("-S")) {
-            Fichier.ecrireStats(FICHIER_STATS);
             Statistiques.afficherStats();
+            FichierEcriture.ecrireStats(FICHIER_STATS);
         } else if (arg.equals("-SR")) {
             Statistiques.reinitStats();
-            Fichier.ecrireStats(FICHIER_STATS);
+            FichierEcriture.ecrireStats(FICHIER_STATS);
         } else {
             System.out.println(MSG_ERR_STATS);
+        }
+        System.exit(1);
+    }
+    
+    private static void arg3IemeInvalide(String arg) {
+        if (!arg.equals("-p")) {
+            System.out.println(MSG_ERR_ARG_P);
+            System.exit(1);
         }
     }
 }
