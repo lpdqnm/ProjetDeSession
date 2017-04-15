@@ -24,7 +24,7 @@ public class Remboursement {
         setMontant(formatSoin(soin), montant);
     }
 
-    private int formatSoin(String soin) {
+    protected int formatSoin(String soin) {
         try {
             return Integer.parseInt(this.soin);
         } catch (NumberFormatException ex) {

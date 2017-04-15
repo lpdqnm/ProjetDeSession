@@ -7,7 +7,7 @@ import net.sf.json.JSONObject;
 import net.sf.json.JSONSerializer;
 
 /**
- * Fonctions pour lire et écrire dans les fichiers JSON
+ * Fonctions pour lire dans les fichiers JSON
  *
  * @author Leopold Quenum
  * @author JP Rioux
@@ -29,11 +29,11 @@ public class FichierLecture {
     public static String MSG_ERR_JSON_1 = "La clé '";
     public static String MSG_ERR_JSON_2 = "' est introuvable dans le fichier JSON";
 
-    public static Dossier lire(String nomFichierEntrer, String nomFichierSortie) {
+    public static Dossier lireInfosDossier(String nomFichierEntrer, String nomFichierSortie) {
         try {
-            return lire(nomFichierEntrer);
+            return lireInfosDossier(nomFichierEntrer);
         } catch (JSONException je) {
-            FichierEcriture.ecrireErreur(nomFichierSortie, MSG_ERR_JSON_1 + obtCleErrJson(je.getMessage()) 
+            FichierEcriture.ecrireErreurInfosDossier(nomFichierSortie, MSG_ERR_JSON_1 + obtCleErrJson(je.getMessage()) 
                     + MSG_ERR_JSON_2);
                     
             return null;
@@ -46,7 +46,7 @@ public class FichierLecture {
          return msgErrJson.substring(msgErrJson.indexOf("\"") + 1, msgErrJson.lastIndexOf("\""));
      }
 
-    private static Dossier lire(String nomFichierEntrer) throws JSONException, Exception {
+    private static Dossier lireInfosDossier(String nomFichierEntrer) throws JSONException, Exception {
         JSONObject racine = fichierEnObjJSON(nomFichierEntrer);
 
         if (racine == null) {
@@ -90,23 +90,35 @@ public class FichierLecture {
 
     public static void lireStats(String fichierStats) {
         JSONObject racine = fichierEnObjJSON(fichierStats);
-
+        
         try {
-            Statistiques.initStats(racine.getInt(Statistiques.RECLAMATIONS_VALIDES),
-                    racine.getInt(Statistiques.RECLAMATIONS_REJETEES),
-                    obtTabStatsSoins(racine.getJSONArray(Statistiques.SOINS)));
+            int nbReclamVald = racine.getInt(Statistiques.RECLAMATIONS_VALIDES);
+            int nbReclamRej = racine.getInt(Statistiques.RECLAMATIONS_REJETEES);
+            JSONArray tbJsonNbSoins = racine.getJSONArray(Statistiques.SOINS);
+            JSONArray tbJsonMxSoins = racine.getJSONArray(Statistiques.MONTT_MAX_SOINS);
+            JSONArray tbJsonTotSoins = racine.getJSONArray(Statistiques.MONTT_TOT_SOINS);
+
+        Statistiques.initStats(nbReclamVald, nbReclamRej, obtTabStatsSoins(tbJsonNbSoins, false), 
+                obtTabStatsSoins(tbJsonMxSoins, true), obtTabStatsSoins(tbJsonTotSoins, true));
         } catch (Exception e) {
-            Statistiques.initStats(0, 0, new int[Statistiques.SOINS_NO.length]);
+            Statistiques.initStats(0, 0, new int[Statistiques.SOINS_NO.length],
+                    new int[Statistiques.SOINS_NO.length], new int[Statistiques.SOINS_NO.length]);
         }
     }
 
-    protected static int[] obtTabStatsSoins(JSONArray tabJSON) throws Exception {
-        int[] tabStatsSoins = new int[tabJSON.size()];
+    protected static int[] obtTabStatsSoins(JSONArray tabJSON, boolean monttDollar) throws Exception {
+        int[] tbStatsSoins = new int[tabJSON.size()];
 
-        for (int i = 0; i < tabStatsSoins.length; i++) {
-            tabStatsSoins[i] = tabJSON.getJSONObject(i).getInt("" + Statistiques.SOINS_NO[i]);
+        for (int i = 0; i < tbStatsSoins.length; i++) {
+            if (monttDollar) {
+                tbStatsSoins[i] = Dollar.StringVersInt(tabJSON.getJSONObject(i).getString("" 
+                        + Statistiques.SOINS_NO[i]));
+            } else {
+                tbStatsSoins[i] = tabJSON.getJSONObject(i).getInt("" + Statistiques.SOINS_NO[i]);                
+            }
+
         }
-        return tabStatsSoins;
+        return tbStatsSoins;
     }
-
+   
 }

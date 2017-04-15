@@ -7,7 +7,7 @@ import net.sf.json.JSONObject;
 import net.sf.json.JSONSerializer;
 
 /**
- * Fonctions pour lire et écrire dans les fichiers JSON
+ * Fonctions pour écrire dans les fichiers JSON
  *
  * @author Leopold Quenum
  * @author JP Rioux
@@ -26,7 +26,7 @@ public class FichierEcriture {
     public static final int MSG = FichierLecture.MSG;
     public static String MSG_ERREUR = FichierLecture.MSG_ERREUR;
 
-    public static void ecrire(String nomFichierSortie, Dossier dossier) {
+    public static void ecrireInfosRembDossier(String nomFichierSortie, Dossier dossier) {
         JSONObject racine = new JSONObject();
 
         if (dossier != null) {
@@ -69,7 +69,7 @@ public class FichierEcriture {
         return objJSON;
     }
 
-    public static void ecrireErreur(String nomFichierSortie, String msgErr) {
+    public static void ecrireErreurInfosDossier(String nomFichierSortie, String msgErr) {
         if (msgErr == null || msgErr.isEmpty()) {
             msgErr = MSG_ERREUR;
         }
@@ -91,20 +91,30 @@ public class FichierEcriture {
     public static void ecrireStats(String fichierStats) {
         JSONObject racine = new JSONObject();
 
-        racine.accumulate(Statistiques.RECLAMATIONS_VALIDES, Statistiques.getStatReclamValides());
-        racine.accumulate(Statistiques.RECLAMATIONS_REJETEES, Statistiques.getStatReclamRejetees());
-        racine.accumulate(Statistiques.SOINS, obtTabJSONSoins(Statistiques.getStatsSoins()));
+        racine.accumulate(Statistiques.RECLAMATIONS_VALIDES, Statistiques.getNbrReclamValides());
+        racine.accumulate(Statistiques.RECLAMATIONS_REJETEES, Statistiques.getNbrReclamRejetees());
+        racine.accumulate(Statistiques.SOINS, obtTabJSONSoins(Statistiques.getTabNbrSoins(),false));
+        racine.accumulate(Statistiques.MONTT_MAX_SOINS, obtTabJSONSoins(Statistiques
+                .getTbMaxMonttSoins(),true));
+        racine.accumulate(Statistiques.MONTT_TOT_SOINS, obtTabJSONSoins(Statistiques
+                .getTbTotMonttSoins(),true));
 
         objJSONEnFichier(fichierStats, racine);
     }
 
-    protected static JSONArray obtTabJSONSoins(int[] tabStatsSoins) {
+    protected static JSONArray obtTabJSONSoins(int[] tabStatsSoins, boolean monttDollar) {
         JSONArray tabObjJSON = new JSONArray();
         JSONObject objJSON;
 
         for (int i = 0; i < tabStatsSoins.length; i++) {
             objJSON = new JSONObject();
-            objJSON.accumulate("" + Statistiques.SOINS_NO[i], tabStatsSoins[i]);
+            if (monttDollar) {
+                objJSON.accumulate("" + Statistiques.SOINS_NO[i], Dollar.IntVersString
+        (tabStatsSoins[i]));
+            } else {
+                objJSON.accumulate("" + Statistiques.SOINS_NO[i], tabStatsSoins[i]);
+            }
+            
             tabObjJSON.add(objJSON);
         }
         return tabObjJSON;

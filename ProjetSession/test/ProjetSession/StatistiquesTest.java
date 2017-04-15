@@ -28,13 +28,13 @@ public class StatistiquesTest {
         assertEquals(expResult, result);
     }
 
-    // Test sur fonction : obtIndexSoinNo
+    // Test sur fonction : obtIndexTbSoinNo
     @Test
     public void testObtIndexSoinNo() {
         System.out.println("obtIndexSoinNo");
         int soinNo = 0;
         int expResult = 0;
-        int result = instance.obtIndexSoinNo(soinNo);
+        int result = instance.obtIndexTbSoinNo(soinNo);
         assertEquals(expResult, result);
     }
 

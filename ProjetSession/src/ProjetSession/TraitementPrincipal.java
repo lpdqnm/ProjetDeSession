@@ -58,7 +58,7 @@ public class TraitementPrincipal {
         } else {
             Statistiques.majStatReclamRejetees();
             FichierEcriture.ecrireStats(FICHIER_STATS);
-            FichierEcriture.ecrireErreur(args[1], dossierTraite.getErreur());
+            FichierEcriture.ecrireErreurInfosDossier(args[1], dossierTraite.getErreur());
         }
     }
      
@@ -69,14 +69,14 @@ public class TraitementPrincipal {
         
         if (!dossierTraite.estValide()) {
             FichierEcriture.ecrireStats(FICHIER_STATS);
-            FichierEcriture.ecrireErreur(args[1], dossierTraite.getErreur());
+            FichierEcriture.ecrireErreurInfosDossier(args[1], dossierTraite.getErreur());
         }
     }
     
     private static Dossier traitementDossier(String[] args) throws Exception{
         String ficEntree = args[0];
         String ficSortie = args[1];
-        Dossier dossier = FichierLecture.lire(ficEntree, ficSortie);
+        Dossier dossier = FichierLecture.lireInfosDossier(ficEntree, ficSortie);
         
         if (!dossier.estValide()) {
             return dossier;
@@ -85,7 +85,7 @@ public class TraitementPrincipal {
         dossier.setRemboursements(obtTabRemb(dossier));
         dossier.setTotal();
         
-        FichierEcriture.ecrire(ficSortie, dossier);
+        FichierEcriture.ecrireInfosRembDossier(ficSortie, dossier);
         return dossier;
     }
            
