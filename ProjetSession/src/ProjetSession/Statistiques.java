@@ -55,7 +55,7 @@ public class Statistiques {
     public static final String TRAIT_HORIZONTAL_1 = "-----------------------------"
             + "------------";
         public static final String TRAIT_HORIZONTAL_2 = "-----------------------------"
-            + "--------------------------------------------";
+            + "----------------------------------------------";
 
     private static int nbrReclamValides = 0;
     private static int nbrReclamRejetees = 0;

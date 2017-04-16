@@ -110,7 +110,7 @@ public class FichierEcriture {
             objJSON = new JSONObject();
             if (monttDollar) {
                 objJSON.accumulate("" + Statistiques.SOINS_NO[i], Dollar.IntVersString
-        (tabStatsSoins[i]));
+                        (tabStatsSoins[i]) + "$");
             } else {
                 objJSON.accumulate("" + Statistiques.SOINS_NO[i], tabStatsSoins[i]);
             }

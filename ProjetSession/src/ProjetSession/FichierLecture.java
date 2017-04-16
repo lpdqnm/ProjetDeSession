@@ -112,7 +112,7 @@ public class FichierLecture {
         for (int i = 0; i < tbStatsSoins.length; i++) {
             if (monttDollar) {
                 tbStatsSoins[i] = Dollar.StringVersInt(tabJSON.getJSONObject(i).getString("" 
-                        + Statistiques.SOINS_NO[i]));
+                        + Statistiques.SOINS_NO[i]).replace("$", ""));
             } else {
                 tbStatsSoins[i] = tabJSON.getJSONObject(i).getInt("" + Statistiques.SOINS_NO[i]);                
             }
