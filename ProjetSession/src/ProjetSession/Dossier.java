@@ -11,6 +11,8 @@ import java.util.Arrays;
 public class Dossier {
 
     private static final String DOLLARS = "$";
+    private static final int NB_MAX_SOINS = 4;
+    
     private final String dossierClient;
     private String numeroClient;
     private String contrat;
@@ -31,7 +33,7 @@ public class Dossier {
     }
 
     public boolean estValide() {
-        if (!this.estValideContrat() || !this.estValideNumeroClient()) {
+        if (!this.estValideContrat() || !this.estValideNumeroClient() || !this.estValideNbSoins()) {
             return false;
         }
 
@@ -61,6 +63,13 @@ public class Dossier {
                 Doit contenir une lettre entre A et E inclusivement
          */
         return this.contrat.matches("[A-E]");
+    }
+    
+    private boolean estValideNbSoins(){
+        int nbReclamation =  getReclamations().length;
+        this.erreur = "Le maximum de soins pour une même réclamation est de " + NB_MAX_SOINS + "." +
+                " Vous en avez " + nbReclamation + " dans votre fichier.";
+        return nbReclamation <= NB_MAX_SOINS;
     }
 
     public String getNumeroClient() {

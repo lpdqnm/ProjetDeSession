@@ -13,6 +13,7 @@ public class Reclamation {
 
     private static final String DOLLARS = "$";
     private static final int MONTANT_MAXIMUM = 50000;
+    private static final int MONTANT_MINIMUM = 0;
     private final String soin;
     private final String date;
     private final String montant;
@@ -27,7 +28,7 @@ public class Reclamation {
     public boolean estValide(String DateTraitement) {
         return estValideSoin() && estValideFormatDate(DateTraitement)
                 && estValideDateReclamVsDateDemande(DateTraitement) && estValideMontant() 
-                && estValideMaxMontant();
+                && estValideMaxMontant() && estValideMinMontant();
     }
 
     private boolean estValideSoin() {
@@ -94,6 +95,13 @@ public class Reclamation {
                 + "Vous avez un montant de réclamation à " + this.montant +".";
         
         return Dollar.StringVersInt(this.montant) <= MONTANT_MAXIMUM;          
+    }
+    
+    private boolean estValideMinMontant(){
+        this.erreur = "Tous les montants de réclamation doivent être supérieur à " +
+                Dollar.IntVersString(MONTANT_MINIMUM) + DOLLARS +". ";
+        
+        return Dollar.StringVersInt(this.montant) > MONTANT_MINIMUM;   
     }
 
     public String getSoin() {
