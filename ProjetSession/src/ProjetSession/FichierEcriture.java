@@ -39,7 +39,7 @@ public class FichierEcriture {
         objJSONEnFichier(nomFichierSortie, racine);
     }
 
-    private static JSONArray obtTabJSONRemb(Remboursement[] tabRemb) {
+    protected static JSONArray obtTabJSONRemb(Remboursement[] tabRemb) {
         if (tabRemb == null) {
             return null;
         }
@@ -57,7 +57,7 @@ public class FichierEcriture {
         return tabJSON;
     }
 
-    private static JSONObject obtObjJSONRemb(Remboursement remboursement) {
+    protected static JSONObject obtObjJSONRemb(Remboursement remboursement) {
         if (remboursement == null) {
             return null;
         }
@@ -80,7 +80,7 @@ public class FichierEcriture {
         System.exit(1);
     }
 
-    private static void objJSONEnFichier(String nomFichierSortie, JSONObject objJSON) {
+    protected static void objJSONEnFichier(String nomFichierSortie, JSONObject objJSON) {
         try {
             Utf8File.saveStringIntoFile(nomFichierSortie, objJSON.toString(4));
         } catch (IOException ioe) {

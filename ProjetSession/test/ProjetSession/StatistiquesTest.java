@@ -21,7 +21,6 @@ public class StatistiquesTest {
         dossier = new Dossier("A100323", "2017-01", null, rembs, null); 
         
         Statistiques.reinitStats();
-        Statistiques.majStatsSoins(dossier);
     }
     
     // Test sur fonction : soinDentaireNoMin
@@ -75,11 +74,15 @@ public class StatistiquesTest {
     public void testMajStatsSoins() {
         System.out.println("majStatsSoins");
         
+        Statistiques.majStatsSoins(dossier);
+
         assertEquals(Statistiques.getTabNbrSoins()[0], 1);
     }
     @Test
     public void testMajStatsSoinsDeux() {
         System.out.println("majStatsSoins");
+        
+        Statistiques.majStatsSoins(dossier);
         
         assertEquals(Statistiques.getTbMaxMonttSoins()[0], Dollar.StringVersInt(rembs[0]
                 .getMontant()));
@@ -88,6 +91,8 @@ public class StatistiquesTest {
     public void testMajStatsSoinsTrois() {
         System.out.println("majStatsSoins");
         
+        Statistiques.majStatsSoins(dossier);
+
         assertEquals(Statistiques.getTbTotMonttSoins()[0], Dollar.StringVersInt(rembs[0]
                 .getMontant()));
     }
@@ -95,12 +100,16 @@ public class StatistiquesTest {
     public void testMajStatsSoinsQuatre() {
         System.out.println("majStatsSoins");
         
+        Statistiques.majStatsSoins(dossier);
+
         assertEquals(Statistiques.getTabNbrSoins()[3], 2);
     }
     @Test
     public void testMajStatsSoinsCing() {
         System.out.println("majStatsSoins");
         
+        Statistiques.majStatsSoins(dossier);
+
         assertEquals(Statistiques.getTbMaxMonttSoins()[3], Math.max(Dollar.StringVersInt(rembs[1]
                 .getMontant()), Dollar.StringVersInt(rembs[2].getMontant())));
     }
@@ -108,6 +117,8 @@ public class StatistiquesTest {
     public void testMajStatsSoinsSix() {
         System.out.println("majStatsSoins");
         
+        Statistiques.majStatsSoins(dossier);
+
         assertEquals(Statistiques.getTbTotMonttSoins()[3], Dollar.StringVersInt(rembs[1]
                 .getMontant())  + Dollar.StringVersInt(rembs[2].getMontant()));
     }

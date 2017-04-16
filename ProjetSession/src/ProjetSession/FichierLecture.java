@@ -42,11 +42,11 @@ public class FichierLecture {
         }
     }
     
-     private static String obtCleErrJson(String msgErrJson) {
+     protected static String obtCleErrJson(String msgErrJson) {
          return msgErrJson.substring(msgErrJson.indexOf("\"") + 1, msgErrJson.lastIndexOf("\""));
      }
 
-    private static Dossier lireInfosDossier(String nomFichierEntrer) throws JSONException, Exception {
+    protected static Dossier lireInfosDossier(String nomFichierEntrer) throws JSONException, Exception {
         JSONObject racine = fichierEnObjJSON(nomFichierEntrer);
 
         if (racine == null) {
@@ -58,7 +58,7 @@ public class FichierLecture {
                 obtTabReclam(racine.getJSONArray(CLES[RECL])), null, null);
     }
 
-    private static JSONObject fichierEnObjJSON(String nomFichierEntrer) {
+    protected static JSONObject fichierEnObjJSON(String nomFichierEntrer) {
         try {
             //Lire fichier et convertir en JSONObject
             String textJson = Utf8File.loadFileIntoString(nomFichierEntrer);
@@ -68,7 +68,7 @@ public class FichierLecture {
         }
     }
 
-    private static Reclamation[] obtTabReclam(JSONArray tabJSON) throws Exception {
+    protected static Reclamation[] obtTabReclam(JSONArray tabJSON) throws Exception {
         Reclamation[] tabReclam = new Reclamation[tabJSON.size()];
 
         for (int i = 0; i < tabJSON.size(); i++) {
@@ -82,7 +82,7 @@ public class FichierLecture {
         return tabReclam;
     }
 
-    private static Reclamation obtReclam(JSONObject objJSON) throws JSONException, Exception {
+    protected static Reclamation obtReclam(JSONObject objJSON) throws JSONException, Exception {
         return new Reclamation(objJSON.getString(CLES[SOIN]), objJSON.getString(CLES[DATE]),
                 objJSON.getString(CLES[MONT]));
     }
