@@ -49,7 +49,7 @@ public final class Dollar {
             montantEnCents = 0;
         }
 
-        dollar = (int) Math.round(((montantEnCents * multiplicateur) / 100));
+        dollar = (int) ((montantEnCents * multiplicateur) / 100);
         cents = (int) Math.round((montantEnCents * multiplicateur) % 100);
 
         return (dollar * 100) + cents;
