@@ -2,9 +2,7 @@ package ProjetSession;
 
 import java.io.IOException;
 import net.sf.json.JSONArray;
-import net.sf.json.JSONException;
 import net.sf.json.JSONObject;
-import net.sf.json.JSONSerializer;
 
 /**
  * Fonctions pour écrire dans les fichiers JSON
@@ -66,6 +64,7 @@ public class FichierEcriture {
         objJSON.accumulate(CLES[SOIN], remboursement.getSoin());
         objJSON.accumulate(CLES[DATE], remboursement.getDate());
         objJSON.accumulate(CLES[MONT], remboursement.getMontant());
+        
         return objJSON;
     }
 

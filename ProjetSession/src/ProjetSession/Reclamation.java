@@ -103,6 +103,14 @@ public class Reclamation {
         
         return Dollar.StringVersInt(this.montant) > MONTANT_MINIMUM;   
     }
+    
+    public int getJour(){
+        try {
+            return Integer.parseInt(date.substring(date.lastIndexOf('-')+1));
+        } catch (NumberFormatException e) {
+            return 1;
+        }
+    }
 
     public String getSoin() {
         return soin;

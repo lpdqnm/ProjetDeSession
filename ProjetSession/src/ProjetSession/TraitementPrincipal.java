@@ -11,7 +11,7 @@ public class TraitementPrincipal {
     public static final String FICHIER_STATS = "statistiques.json";
     public static final String MSG_ERR_AGRS = "Erreur avec le nombre de paramètres."
             + "\nVous devez avoir 3 paramètres."
-            + "\n<FICHIERENTREE> <FICHIERSORTIE> -p (pour les traitements sans statistiques)"
+            + "\n -p <FICHIERENTREE> <FICHIERSORTIE> (pour les traitements sans statistiques)"
             + "\n               OU"
             + "\nVous devez avoir 2 paramètres."
             + "\n<FICHIERENTREE> <FICHIERSORTIE>"
@@ -23,7 +23,7 @@ public class TraitementPrincipal {
             + "réinitialiser les statistiques)";
     public static final String MSG_ERR_ARG_P = "Erreur avec le paramètre -p."
             + "\nVous devez avoir 3 paramètres."
-            + "\n<FICHIERENTREE> <FICHIERSORTIE> -p";
+            + "\n -p <FICHIERENTREE> <FICHIERSORTIE>";
 
     public static void main(String[] args) {
         FichierLecture.lireStats(FICHIER_STATS);
@@ -50,7 +50,7 @@ public class TraitementPrincipal {
     }
     
     public static void traitementDossierStats(String[] args)  throws Exception {
-        Dossier dossierTraite = traitementDossier(args);
+        Dossier dossierTraite = traitementDossier(args[0], args[1]);
         
         if (dossierTraite.estValide()) {
             Statistiques.majStatReclamValides();
@@ -63,19 +63,17 @@ public class TraitementPrincipal {
     }
      
     private static void traitementDossierPrediction(String[] args) throws Exception{
-        arg3IemeInvalide(args[2]);
+        arg1IemeInvalide(args[0]);
         
-        Dossier dossierTraite = traitementDossier(args);
+        Dossier dossierTraite = traitementDossier(args[1],args[2]);
         
         if (!dossierTraite.estValide()) {
             FichierEcriture.ecrireStats(FICHIER_STATS);
-            FichierEcriture.ecrireErreurInfosDossier(args[1], dossierTraite.getErreur());
+            FichierEcriture.ecrireErreurInfosDossier(args[2], dossierTraite.getErreur());
         }
     }
     
-    private static Dossier traitementDossier(String[] args) throws Exception{
-        String ficEntree = args[0];
-        String ficSortie = args[1];
+    private static Dossier traitementDossier(String ficEntree, String ficSortie) throws Exception{
         Dossier dossier = FichierLecture.lireInfosDossier(ficEntree, ficSortie);
         
         if (!dossier.estValide()) {
@@ -90,9 +88,8 @@ public class TraitementPrincipal {
     }
            
     public static void nbrArgsInvalide(String[] args) throws Exception {
-        if (args.length != 1 && args.length != 2 && args.length != 3) {
+        if (args.length < 1 || args.length > 3) {
             System.out.println(MSG_ERR_AGRS);
-
             System.exit(1);
         }
     }
@@ -123,7 +120,7 @@ public class TraitementPrincipal {
         System.exit(1);
     }
     
-    private static void arg3IemeInvalide(String arg) {
+    private static void arg1IemeInvalide(String arg) {
         if (!arg.equals("-p")) {
             System.out.println(MSG_ERR_ARG_P);
             System.exit(1);

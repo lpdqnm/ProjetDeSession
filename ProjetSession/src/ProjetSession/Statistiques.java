@@ -54,7 +54,7 @@ public class Statistiques {
     public static final String[] PRTHS = {" (", ")"};
     public static final String TRAIT_HORIZONTAL_1 = "-----------------------------"
             + "------------";
-        public static final String TRAIT_HORIZONTAL_2 = "-----------------------------"
+    public static final String TRAIT_HORIZONTAL_2 = "-----------------------------"
             + "----------------------------------------------";
 
     private static int nbrReclamValides = 0;
@@ -118,8 +118,7 @@ public class Statistiques {
 
         for (int i = 0; i < remboursements.length; i++) {
             soinNo = soinDentaireNoMin(remboursements[i].formatSoin(remboursements[i].getSoin()));
-            monttSoin = Dollar.StringVersInt(remboursements[i].getMontant());
-            
+            monttSoin = Dollar.StringVersInt(remboursements[i].getMontant());            
             idxNoSoin = obtIndexTbSoinNo(soinNo);
 
             if (idxNoSoin >= 0) {
@@ -181,9 +180,9 @@ public class Statistiques {
     }
 
     protected static void afficherStatsSoins() {
-        String typSoin, monttMxStr;
-        Double monttMy = 0.0;
+        String typSoin, monttMxStr;        
         for (int i = 0; i < SOINS_CATEGORIE.length; i++) {
+            Double monttMy = 0.0;
             typSoin = SOINS_CATEGORIE[i] + PRTHS[0] + obtIntervalSoinsDents(SOINS_NO[i]) + PRTHS[1];
             monttMxStr = Dollar.IntVersString(tbMaxMonttSoins[i]);
             

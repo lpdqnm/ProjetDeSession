@@ -1,1 +1,27 @@
-{"message": "Le maximum de soins pour une même réclamation est de 4. Vous en avez 5 dans votre fichier."}
+{
+    "dossier": "E100323",
+    "mois": "2017-01",
+    "remboursements":     [
+                {
+            "soin": "500",
+            "date": "2017-01-23",
+            "montant": "20.00$"
+        },
+                {
+            "soin": "500",
+            "date": "2017-01-23",
+            "montant": "20.00$"
+        },
+                {
+            "soin": "500",
+            "date": "2017-01-23",
+            "montant": "20.00$"
+        },
+                {
+            "soin": "500",
+            "date": "2017-01-23",
+            "montant": "20.00$"
+        }
+    ],
+    "total": "80.00$"
+}

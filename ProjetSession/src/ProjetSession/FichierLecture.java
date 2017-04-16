@@ -33,9 +33,8 @@ public class FichierLecture {
         try {
             return lireInfosDossier(nomFichierEntrer);
         } catch (JSONException je) {
-            FichierEcriture.ecrireErreurInfosDossier(nomFichierSortie, MSG_ERR_JSON_1 + obtCleErrJson(je.getMessage()) 
-                    + MSG_ERR_JSON_2);
-                    
+            FichierEcriture.ecrireErreurInfosDossier(nomFichierSortie, MSG_ERR_JSON_1 + 
+                    obtCleErrJson(je.getMessage()) + MSG_ERR_JSON_2);                    
             return null;
         } catch (Exception e) {
             return null;
@@ -46,7 +45,8 @@ public class FichierLecture {
          return msgErrJson.substring(msgErrJson.indexOf("\"") + 1, msgErrJson.lastIndexOf("\""));
      }
 
-    protected static Dossier lireInfosDossier(String nomFichierEntrer) throws JSONException, Exception {
+    protected static Dossier lireInfosDossier(String nomFichierEntrer) 
+            throws JSONException, Exception {
         JSONObject racine = fichierEnObjJSON(nomFichierEntrer);
 
         if (racine == null) {
@@ -106,7 +106,8 @@ public class FichierLecture {
         }
     }
 
-    protected static int[] obtTabStatsSoins(JSONArray tabJSON, boolean monttDollar) throws Exception {
+    protected static int[] obtTabStatsSoins(JSONArray tabJSON, boolean monttDollar) 
+            throws Exception {
         int[] tbStatsSoins = new int[tabJSON.size()];
 
         for (int i = 0; i < tbStatsSoins.length; i++) {

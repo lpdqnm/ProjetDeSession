@@ -12,6 +12,7 @@ public class Dossier {
 
     private static final String DOLLARS = "$";
     private static final int NB_MAX_SOINS = 4;
+    private static final int NB_JOURS_MOIS = 31;
     
     private final String dossierClient;
     private String numeroClient;
@@ -33,7 +34,8 @@ public class Dossier {
     }
 
     public boolean estValide() {
-        if (!this.estValideContrat() || !this.estValideNumeroClient() || !this.estValideNbSoins()) {
+        if (!this.estValideContrat() || !this.estValideNumeroClient() || 
+                !this.estValideNbSoinsJours()) {
             return false;
         }
 
@@ -65,11 +67,35 @@ public class Dossier {
         return this.contrat.matches("[A-E]");
     }
     
-    private boolean estValideNbSoins(){
+    private boolean estValideNbSoinsJours(){
         int nbReclamation =  getReclamations().length;
-        this.erreur = "Le maximum de soins pour une même réclamation est de " + NB_MAX_SOINS + "." +
+        this.erreur = "Le maximum de soins réclamés pour un même jour est de " + NB_MAX_SOINS + "." +
                 " Vous en avez " + nbReclamation + " dans votre fichier.";
-        return nbReclamation <= NB_MAX_SOINS;
+        
+        SoinsJours[] tabSoinsJours = new SoinsJours[NB_JOURS_MOIS];        
+        tabSoinsJours = genererSoinParJour(tabSoinsJours);
+        
+        for (int i = 0; i < tabSoinsJours.length; i++) {
+            if(tabSoinsJours[i].getNbSoin() > NB_MAX_SOINS)
+                return false;
+        }
+        
+        return true;
+    }
+    
+    private SoinsJours[] genererSoinParJour(SoinsJours[] tabSoinsJours){
+        int jour;
+        for (int i = 0; i < tabSoinsJours.length; i++) {
+            tabSoinsJours[i] = new SoinsJours();
+        }  
+        
+        for (int i = 0; i < this.reclamations.length; i++) {
+            jour = this.reclamations[i].getJour();
+            if(jour > 0 && jour <= NB_JOURS_MOIS)
+                tabSoinsJours[jour-1].incrementeNbSoin();
+        }  
+        
+        return tabSoinsJours;
     }
 
     public String getNumeroClient() {
