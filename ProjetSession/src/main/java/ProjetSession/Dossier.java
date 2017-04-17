@@ -158,12 +158,4 @@ public class Dossier {
     public void setErreur(String erreur) {
         this.erreur = erreur;
     }
-
-    @Override
-    public String toString() {
-        return "Dossier{" + "dossierClient=" + dossierClient + ", mois=" + mois
-                + ",\nreclamations=" + Arrays.toString(reclamations)
-                + ",\nremboursements=" + Arrays.toString(remboursements)
-                + ",\ntotal=" + total + "}";
-    }
 }

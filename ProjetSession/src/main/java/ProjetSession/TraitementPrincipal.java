@@ -40,7 +40,8 @@ public class TraitementPrincipal {
                     traitementDossierPrediction(args);
                     break;
                 default:
-                    nbrArgsInvalide(args);
+                    System.out.println(MSG_ERR_AGRS);
+                    System.exit(1);
                     break;
             }
         } catch (Exception ex) {
@@ -85,13 +86,6 @@ public class TraitementPrincipal {
         
         FichierEcriture.ecrireInfosRembDossier(ficSortie, dossier);
         return dossier;
-    }
-           
-    public static void nbrArgsInvalide(String[] args) throws Exception {
-        if (args.length < 1 || args.length > 3) {
-            System.out.println(MSG_ERR_AGRS);
-            System.exit(1);
-        }
     }
 
     private static Remboursement[] obtTabRemb(Dossier dossier) throws Exception {

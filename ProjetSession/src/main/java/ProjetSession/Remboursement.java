@@ -26,7 +26,7 @@ public class Remboursement {
 
     protected int formatSoin(String soin) {
         try {
-            return Integer.parseInt(this.soin);
+            return Integer.parseInt(soin);
         } catch (NumberFormatException ex) {
             return -1;
         }
@@ -271,11 +271,6 @@ public class Remboursement {
         montantRemb = this.mensuelle.getMaxPourSoin(Soin.MEDECIN_GENERALISTE_PRIVE, montantRemb);
         this.mensuelle.additionerMontantPourSoin(Soin.MEDECIN_GENERALISTE_PRIVE, montantRemb);
         return montantRemb;
-    }
-
-    @Override
-    public String toString() {
-        return "Remboursement{" + "soin=" + soin + ", date=" + date + ", montant=" + montant + '}';
     }
 
     public String getSoin() {

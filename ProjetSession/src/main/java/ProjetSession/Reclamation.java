@@ -131,9 +131,4 @@ public class Reclamation {
     public void setErreur(String erreur) {
         this.erreur = erreur;
     }
-
-    @Override
-    public String toString() {
-        return "Reclamation{" + "soin=" + soin + ", date=" + date + ", montant=" + montant + '}';
-    }
 }

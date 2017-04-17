@@ -64,6 +64,12 @@ public class FichierEcritureTest {
         assertEquals(result.get("montant"), remb.getMontant());
     }
     
+    @Test
+    public void testObtObjJSONRembQuatre() {
+        System.out.println("obtObjJSONRemb");               
+        assertEquals(FichierEcriture.obtObjJSONRemb(null),null);
+    }
+    
     /**
      * Test de la méthode obtTabJSONSoins, de la class FichierEcriture.
      */
