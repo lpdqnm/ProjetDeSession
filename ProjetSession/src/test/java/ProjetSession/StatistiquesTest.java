@@ -1,5 +1,6 @@
 package ProjetSession;
 
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import static org.junit.Assert.*;
@@ -20,8 +21,12 @@ public class StatistiquesTest {
         rembs[2] = new Remboursement("A", "175", "2017-01-15", "20.00$", new Mensuelle());
         dossier = new Dossier("A100323", "2017-01", null, rembs, null); 
         
-        Statistiques.reinitStats();
     }
+    
+    @After
+    public void tearDown() {
+        Statistiques.reinitStats();
+    }      
     
     // Test sur fonction : soinDentaireNoMin
     @Test

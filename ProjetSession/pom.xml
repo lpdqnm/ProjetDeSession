@@ -17,7 +17,7 @@
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
             <version>4.10</version>
-            <scope>test</scope>
+            <type>jar</type>
         </dependency>
         <dependency>
           <groupId>net.sf.json-lib</groupId>
@@ -61,6 +61,20 @@
             <artifactId>commons-beanutils</artifactId>
             <version>1.8.0</version>
         </dependency>
+        <!-- https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-test -->
+<dependency>
+    <groupId>org.springframework.boot</groupId>
+    <artifactId>spring-boot-starter-test</artifactId>
+    <version>1.2.3.RELEASE</version>
+</dependency>
+
+<!-- https://mvnrepository.com/artifact/com.be-hase.output-capture/output-capture -->
+<dependency>
+    <groupId>com.be-hase.output-capture</groupId>
+    <artifactId>output-capture</artifactId>
+    <version>0.0.1</version>
+</dependency>
+
     </dependencies>
     
     <build>

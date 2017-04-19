@@ -63,7 +63,7 @@ public class TraitementPrincipal {
         }
     }
      
-    private static void traitementDossierPrediction(String[] args) throws Exception{
+    protected static void traitementDossierPrediction(String[] args) throws Exception{
         arg1IemeInvalide(args[0]);
         
         Dossier dossierTraite = traitementDossier(args[1],args[2]);
@@ -74,7 +74,7 @@ public class TraitementPrincipal {
         }
     }
     
-    private static Dossier traitementDossier(String ficEntree, String ficSortie) throws Exception{
+    protected static Dossier traitementDossier(String ficEntree, String ficSortie) throws Exception{
         Dossier dossier = FichierLecture.lireInfosDossier(ficEntree, ficSortie);
         
         if (!dossier.estValide()) {
@@ -88,7 +88,7 @@ public class TraitementPrincipal {
         return dossier;
     }
 
-    private static Remboursement[] obtTabRemb(Dossier dossier) throws Exception {
+    protected static Remboursement[] obtTabRemb(Dossier dossier) throws Exception {
         Reclamation[] tabReclam = dossier.getReclamations();
         Remboursement[] tabRemb = new Remboursement[tabReclam.length];
         Mensuelle mens = new Mensuelle();
@@ -101,7 +101,7 @@ public class TraitementPrincipal {
         return tabRemb;
     }
 
-    private static void lesStatistiques(String arg) {
+    protected static void lesStatistiques(String arg) {
         if (arg.equals("-S")) {
             Statistiques.afficherStats();
             FichierEcriture.ecrireStats(FICHIER_STATS);
@@ -114,7 +114,7 @@ public class TraitementPrincipal {
         System.exit(1);
     }
     
-    private static void arg1IemeInvalide(String arg) {
+    protected static void arg1IemeInvalide(String arg) {
         if (!arg.equals("-p")) {
             System.out.println(MSG_ERR_ARG_P);
             System.exit(1);
