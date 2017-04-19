@@ -5,6 +5,9 @@
  */
 package ProjetSession;
 
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.util.concurrent.ExecutionException;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import org.junit.After;
@@ -101,5 +104,16 @@ public class FichierLectureTest {
         int[] expResult = {2,0,1};
         int[] result = FichierLecture.obtTabStatsSoins(tabJSON, monttDollar);
         assertArrayEquals(expResult, result);
+    }
+    
+    /**
+     * Test de la méthode lireInfosDossier , de la class FichierLecture.
+     */
+    //@Test(expected = Exception.class)
+    @Test
+    public void testFichierEnObjJSON() {
+        
+        objJSON = FichierLecture.fichierEnObjJSON("fichierInexistant");
+        assertEquals(objJSON, null);
     }
 }

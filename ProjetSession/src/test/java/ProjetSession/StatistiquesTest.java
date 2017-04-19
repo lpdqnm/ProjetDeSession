@@ -127,11 +127,5 @@ public class StatistiquesTest {
         assertEquals(Statistiques.getTbTotMonttSoins()[3], Dollar.StringVersInt(rembs[1]
                 .getMontant())  + Dollar.StringVersInt(rembs[2].getMontant()));
     }
-
-    // Test sur fonction : afficherStats
-    @Test
-    public void testAfficherStats() {
-        System.out.println("afficherStats");
-        Statistiques.afficherStats();
-    }   
+    
 }
