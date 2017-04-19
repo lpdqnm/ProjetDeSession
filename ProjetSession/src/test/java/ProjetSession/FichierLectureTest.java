@@ -107,13 +107,37 @@ public class FichierLectureTest {
     }
     
     /**
-     * Test de la méthode lireInfosDossier , de la class FichierLecture.
+     * Test de la méthode fichierEnObjJSONNull , de la class FichierLecture.
      */
-    //@Test(expected = Exception.class)
     @Test
-    public void testFichierEnObjJSON() {
+    public void testFichierEnObjJSONNull() {
         
         objJSON = FichierLecture.fichierEnObjJSON("fichierInexistant");
         assertEquals(objJSON, null);
     }
+    @Test
+    public void testFichierEnObjJSONUn() {
+        
+        objJSON = FichierLecture.fichierEnObjJSON(".\\src\\test\\resources\\jsonTest.json");
+        assertEquals(objJSON.getString("test"), "JUnit test");
+    }
+    @Test
+    public void testFichierEnObjJSODeux() {
+        
+        objJSON = FichierLecture.fichierEnObjJSON(".\\src\\test\\resources\\jsonTest.json");
+        assertEquals(objJSON.getString("langage"), "Java");
+    }@Test
+    public void testFichierEnObjJSODossier() {
+        
+        objJSON = FichierLecture.fichierEnObjJSON(".\\src\\test\\resources\\dossierFichier.json");
+        
+        String jsonStr = "{\"dossier\":\"A100323\",\"mois\":\"2017-01\",\"reclamations\":"
+                + "[{\"soin\":175,\"date\":\"2017-01-11\",\"montant\":\"130.00$\"},{\"soin\":"
+                + "175,\"date\":\"2017-01-14\",\"montant\":\"130.00$\"},{\"soin\":175,\"date\":"
+                + "\"2017-01-15\",\"montant\":\"130.00$\"},{\"soin\":175,\"date\":\"2017-01-17\","
+                + "\"montant\":\"130.00$\"}]}";
+        
+        assertEquals(objJSON.toString(), jsonStr);
+    }
+    
 }
