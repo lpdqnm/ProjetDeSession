@@ -17,6 +17,6 @@ public class SoinTest {
     @Test 
     public void testClassSoin() {
         Soin soin = new Soin();
-        assertEquals(Soin.class, soin.getClass());                
+        assertEquals(Soin.class, soin.getClass());           
     }
 }

@@ -5,9 +5,6 @@
  */
 package ProjetSession;
 
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.util.concurrent.ExecutionException;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import org.junit.After;
@@ -23,6 +20,8 @@ public class FichierLectureTest {
     
     public FichierLectureTest() {
     }
+    
+    ClassLoader classLoader = getClass().getClassLoader();
     
     JSONObject objJSON;
     Reclamation recl;
@@ -118,22 +117,19 @@ public class FichierLectureTest {
         assertEquals(objJSON, null);
     }
     @Test
-    public void testFichierEnObjJSONUn() {
-        
-        objJSON = FichierLecture.fichierEnObjJSON(".\\src\\test\\resources\\jsonTest.json");
+    public void testFichierEnObjJSONUn() {                
+        objJSON = FichierLecture.fichierEnObjJSON(classLoader.getResource("jsonTest.json").getFile());        
         assertEquals(objJSON.getString("test"), "JUnit test");
     }
     @Test
-    public void testFichierEnObjJSONDeux() {
-        
-        objJSON = FichierLecture.fichierEnObjJSON(".\\src\\test\\resources\\jsonTest.json");
+    public void testFichierEnObjJSONDeux() {                
+        objJSON = FichierLecture.fichierEnObjJSON(classLoader.getResource("jsonTest.json").getFile());                
         assertEquals(objJSON.getString("langage"), "Java");
     }
     @Test
-    public void testFichierEnObjJSODossier() {
-        
-        objJSON = FichierLecture.fichierEnObjJSON(".\\src\\test\\resources\\dossierFichier.json");
-        
+    public void testFichierEnObjJSODossier() {                        
+        objJSON = FichierLecture.fichierEnObjJSON(classLoader.getResource("dossierFichier.json").getFile());
+
         String jsonStr = "{\"dossier\":\"A100323\",\"mois\":\"2017-01\",\"reclamations\":"
                 + "[{\"soin\":175,\"date\":\"2017-01-11\",\"montant\":\"130.00$\"},{\"soin\":"
                 + "175,\"date\":\"2017-01-14\",\"montant\":\"130.00$\"},{\"soin\":175,\"date\":"
@@ -147,9 +143,8 @@ public class FichierLectureTest {
      * Test de la méthode lireInfosDossier , de la class FichierLecture.
      */
     @Test
-    public void testLireInfosDossier() throws Exception {
-        
-        dossier = FichierLecture.lireInfosDossier(".\\src\\test\\resources\\dossierFichier.json");
+    public void testLireInfosDossier() throws Exception {        
+        dossier = FichierLecture.lireInfosDossier(classLoader.getResource("dossierFichier.json").getFile());
         
         assertEquals(dossier.getDossierClient(), "A100323");
     }

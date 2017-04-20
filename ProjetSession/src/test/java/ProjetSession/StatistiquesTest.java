@@ -164,13 +164,13 @@ public class StatistiquesTest {
     }
     
     @Test
-    public void testSetGetNbrReclamValides(){
+    public void testSetGetNbrReclamValides(){       
         Statistiques.majStatReclamValides();
         assertEquals(1,Statistiques.getNbrReclamValides());
     }
     
     @Test
-    public void testAfficherStats() {                           
+    public void testAfficherStats() {            
         // Vérifie seulement si les procédures d'affichages ne plante pas
        Statistiques.initStats(1, 1, tabNbrSoins, tbMaxMonttSoins, tbTotMonttSoins);
        Statistiques.afficherStats();
@@ -184,7 +184,7 @@ public class StatistiquesTest {
     }
     
     @Test
-    public void testInitStats(){
+    public void testInitStats(){    
         Statistiques.initStats(1, 1, tabNbrSoins, tbMaxMonttSoins, tbTotMonttSoins);
         assertEquals(1,Statistiques.getNbrReclamValides());
         assertEquals(1,Statistiques.getNbrReclamRejetees());
