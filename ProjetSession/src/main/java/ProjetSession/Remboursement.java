@@ -32,7 +32,7 @@ public class Remboursement {
         }
     }
 
-    private void setMontant(int soin, String montant) {
+    public void setMontant(int soin, String montant) {
         if (soin == Soin.MASSOTHERAPIE) {
             this.montant = Dollar.IntVersString(this.getMontantMasso(this.contrat,
                     Dollar.StringVersInt(montant)));
@@ -64,7 +64,7 @@ public class Remboursement {
             this.montant = Dollar.IntVersString(this.getMontantOrtho(this.contrat,
                     Dollar.StringVersInt(montant)));
         } else {
-            this.montant = montant;
+            this.montant = Dollar.IntVersString( Dollar.StringVersInt(montant));
         }
     }
 

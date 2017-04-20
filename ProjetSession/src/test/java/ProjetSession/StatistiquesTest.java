@@ -1,6 +1,9 @@
 package ProjetSession;
 
+import java.io.ByteArrayOutputStream;
+import java.io.PrintStream;
 import org.junit.After;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import static org.junit.Assert.*;
@@ -13,20 +16,40 @@ import static org.junit.Assert.*;
 public class StatistiquesTest {
     Remboursement[] rembs = new Remboursement[3];
     Dossier dossier;
+    int[] tabNbrSoins = new int[10];
+    int[] tbMaxMonttSoins = new int[10];
+    int[] tbTotMonttSoins = new int[10];
+    
+    private final ByteArrayOutputStream sortieContenu = new ByteArrayOutputStream();    
+    
     
     @Before
     public void setUp() {
+        
+        System.setOut(new PrintStream(sortieContenu));
         rembs[0] = new Remboursement("A","0", "2017-01-11", "10.00$", new Mensuelle());
         rembs[1] = new Remboursement("A", "175", "2017-01-14", "15.00$", new Mensuelle());
         rembs[2] = new Remboursement("A", "175", "2017-01-15", "20.00$", new Mensuelle());
         dossier = new Dossier("A100323", "2017-01", null, rembs, null); 
         
+        
+        tabNbrSoins[0] = 1;
+        tbMaxMonttSoins[0] = 1;
+        tbTotMonttSoins[0] = 1;
+        
+        
     }
     
     @After
-    public void tearDown() {
+    public void tearDown() {   
         Statistiques.reinitStats();
     }      
+    
+    @Test 
+    public void testClassStatistiques() {
+        Statistiques statistiques = new Statistiques();
+        assertEquals(Statistiques.class, statistiques.getClass());                
+    }
     
     // Test sur fonction : soinDentaireNoMin
     @Test
@@ -72,6 +95,12 @@ public class StatistiquesTest {
         
         int result = Statistiques.obtIndexTbSoinNo(175);
         assertEquals(3, result);
+    }
+    
+    @Test
+    public void testObtIndexTbSoinNo(){
+        System.out.println("obtIndexSoinNo");      
+        assertEquals(-1, Statistiques.obtIndexTbSoinNo(-1));
     }
     
     // Test sur fonctions : majStatsSoins , getTabNbrSoins, getTbMaxMonttSoins, getTbTotMonttSoins
@@ -128,4 +157,39 @@ public class StatistiquesTest {
                 .getMontant())  + Dollar.StringVersInt(rembs[2].getMontant()));
     }
     
+    @Test
+    public void testSetGetNbrReclamRejetees(){
+        Statistiques.majStatReclamRejetees();
+        assertEquals(1,Statistiques.getNbrReclamRejetees());
+    }
+    
+    @Test
+    public void testSetGetNbrReclamValides(){
+        Statistiques.majStatReclamValides();
+        assertEquals(1,Statistiques.getNbrReclamValides());
+    }
+    
+    @Test
+    public void testAfficherStats() {                           
+        // Vérifie seulement si les procédures d'affichages ne plante pas
+       Statistiques.initStats(1, 1, tabNbrSoins, tbMaxMonttSoins, tbTotMonttSoins);
+       Statistiques.afficherStats();
+       assertEquals(sortieContenu.toString(),sortieContenu.toString());            
+    }
+    
+    @Test
+    public void testobtIntervalSoinsDents(){
+        assertEquals("300...399",Statistiques.obtIntervalSoinsDents(300));        
+        assertEquals("301",Statistiques.obtIntervalSoinsDents(301));
+    }
+    
+    @Test
+    public void testInitStats(){
+        Statistiques.initStats(1, 1, tabNbrSoins, tbMaxMonttSoins, tbTotMonttSoins);
+        assertEquals(1,Statistiques.getNbrReclamValides());
+        assertEquals(1,Statistiques.getNbrReclamRejetees());
+        Assert.assertArrayEquals(tbMaxMonttSoins,Statistiques.getTbMaxMonttSoins());
+        Assert.assertArrayEquals(tbTotMonttSoins,Statistiques.getTbTotMonttSoins());        
+    }
+
 }

@@ -117,8 +117,15 @@ public class DollarTest {
     
     @Test 
     public void testStringVersIntAvecNegatif() {
-        assertEquals(-550, Dollar.StringVersInt("-5.5$"));
+        assertEquals(-550, Dollar.StringVersInt("-5.5$"));                
     }
+    
+    @Test 
+    public void testClassDollar() {
+        Dollar dollar = new Dollar();
+        assertEquals(Dollar.class, dollar.getClass());                
+    }
+    
 
 
 }

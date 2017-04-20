@@ -264,7 +264,8 @@ public class RemboursementTest {
         assertEquals(rembValideOsteo.getMontant(),REMB_CONTRAT_E_SOIN_OSTEO);
         assertEquals(rembValidePhysio.getMontant(),REMB_CONTRAT_E_SOIN_PHYSIO);
         assertEquals(rembValidePsycho.getMontant(),REMB_CONTRAT_E_SOIN_PSYCHO);     
-        assertEquals(rembValideContratInexistant.getMontant(),REMB_CONTRAT_INEXISTANT);
+       rembValideContratInexistant.setMontant(9999, REMB_CONTRAT_E_SOIN_NAT);
+        assertEquals(rembValideContratInexistant.getMontant(),REMB_CONTRAT_E_SOIN_NAT);
     }
     
     @Test

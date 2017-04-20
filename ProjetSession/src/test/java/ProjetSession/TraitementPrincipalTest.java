@@ -16,10 +16,8 @@ import static org.junit.Assert.*;
  * @author JP Rioux
  */
 public class TraitementPrincipalTest {
-    
-    public TraitementPrincipalTest() {
-    }
-    
+   
+    TraitementPrincipal traitement;
     Reclamation[] reclams = new Reclamation[3];
     Dossier dossier;
     Remboursement[] rembs = new Remboursement[3];
@@ -28,6 +26,9 @@ public class TraitementPrincipalTest {
         
     @Before
     public void setUp() {
+        
+        traitement = new TraitementPrincipal(); 
+                
         reclams[0] = new Reclamation("0", "2017-01-11", "10.00$");
         reclams[1] = new Reclamation( "175", "2017-01-14", "15.00$");
         reclams[2] = new Reclamation( "175", "2017-01-15", "20.00$");
@@ -42,7 +43,13 @@ public class TraitementPrincipalTest {
     public void tearDown() {
     }
 
-        /**
+    @Test 
+    public void testClassTraitementPrincipal() {       
+        assertEquals(TraitementPrincipal.class, traitement.getClass());                
+    }
+    
+    
+    /**
      * Test de la méthode obtTabRemb de la  classe TraitementPrincipal.
      */
     @Test
