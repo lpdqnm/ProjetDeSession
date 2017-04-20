@@ -3,129 +3,124 @@ package ProjetSession;
 import static org.junit.Assert.assertEquals;
 import org.junit.Test;
 
-
 /**
- * Classe pour tester la classe Dollar
- *
  * @author Leopold Quenum
  * @author JP Rioux
  */
 public class DollarTest {
-    
+
     // Tests sur la fonction : multiplication
-    @Test 
+    @Test
     public void testMultiZeroSurMontant() {
         assertEquals(0, Dollar.multiplication(100, 0));
     }
 
-    @Test 
+    @Test
     public void testMultiZeroSurMulti() {
         assertEquals(0, Dollar.multiplication(0, 20));
-    }    
-    
-    @Test 
+    }
+
+    @Test
     public void testMultiPetitMulti() {
         assertEquals(1, Dollar.multiplication(100, 0.01));
     }
-    
-    @Test 
+
+    @Test
     public void testMultiPetitMulti2() {
         assertEquals(1, Dollar.multiplication(51, 0.01));
     }
-    
-    @Test 
+
+    @Test
     public void testMultiPetitMulti3() {
         assertEquals(0, Dollar.multiplication(49, 0.01));
     }
-    
-    @Test 
+
+    @Test
     public void testMultiPetitMontant() {
         assertEquals(5, Dollar.multiplication(1, 5));
-    } 
-    
-    @Test 
+    }
+
+    @Test
     public void testMultiNormalEntier() {
         assertEquals(550, Dollar.multiplication(550, 1));
-    } 
-    
-    @Test 
+    }
+
+    @Test
     public void testMultiNormalPourcentage() {
         assertEquals(110, Dollar.multiplication(550, 0.2));
     }
-    
-    @Test 
+
+    @Test
     public void testMultiNegatif() {
         assertEquals(0, Dollar.multiplication(-550, 0.2));
     }
-    
+
     // Tests sur la fonction : IntVersString
-    @Test 
+    @Test
     public void testIntVersStringZero() {
         assertEquals("0.00", Dollar.IntVersString(0));
     }
-    
-    @Test 
+
+    @Test
     public void testIntVersStringUnDecimal() {
         assertEquals("5.50", Dollar.IntVersString(550));
     }
-    
-    @Test 
+
+    @Test
     public void testIntVersStringNormal() {
         assertEquals("75.55", Dollar.IntVersString(7555));
     }
-    
-    @Test 
+
+    @Test
     public void testIntVersStringNeg() {
         assertEquals("0.00", Dollar.IntVersString(-7555));
     }
-    
+
     // Tests sur la fonction : StringVersInt
-    @Test 
+    @Test
     public void testStringVersIntSansDollar() {
         assertEquals(550, Dollar.StringVersInt("5.5"));
     }
-    
-    @Test 
+
+    @Test
     public void testStringVersIntAvecDollar() {
         assertEquals(550, Dollar.StringVersInt("5.5$"));
     }
-    
-    @Test 
+
+    @Test
     public void testStringVersIntAvecVirgule() {
         assertEquals(550, Dollar.StringVersInt("5,5$"));
     }
-    
-    @Test 
+
+    @Test
     public void testStringVersIntAvecDeuxDecimal() {
         assertEquals(505, Dollar.StringVersInt("5.05$"));
     }
-    
-    @Test 
+
+    @Test
     public void testStringVersIntAvecNull() {
         assertEquals(0, Dollar.StringVersInt(null));
     }
-    
-    @Test 
+
+    @Test
     public void testStringVersIntAvecLettre() {
         assertEquals(0, Dollar.StringVersInt("5aa.5$"));
     }
-    
-    @Test 
+
+    @Test
     public void testStringVersIntAvecPlusieursPoint() {
         assertEquals(0, Dollar.StringVersInt("5.5.$"));
     }
-    
-    @Test 
+
+    @Test
     public void testStringVersIntAvecNegatif() {
-        assertEquals(-550, Dollar.StringVersInt("-5.5$"));                
+        assertEquals(-550, Dollar.StringVersInt("-5.5$"));
     }
-    
-    @Test 
+
+    @Test
     public void testClassDollar() {
         Dollar dollar = new Dollar();
-        assertEquals(Dollar.class, dollar.getClass());                
+        assertEquals(Dollar.class, dollar.getClass());
     }
-    
-
 
 }
