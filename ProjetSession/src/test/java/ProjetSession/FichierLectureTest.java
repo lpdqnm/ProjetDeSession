@@ -19,6 +19,7 @@ public class FichierLectureTest {
     private static boolean monttDollar;
     private static JSONObject objJSONItem;
     private static Dossier dossier;
+    private static int[] tbNbSoinsCat = new int[10];
 
     @Before
     public void setUp() {
@@ -41,10 +42,14 @@ public class FichierLectureTest {
         objJSONItem = new JSONObject();
         objJSONItem.accumulate("150", 1);
         tabJSON.add(objJSONItem);
+        
+        int [] tabInit = {1,2,3,4,5,6,7,8,9,0};
+        tbNbSoinsCat = tabInit;
     }
 
     @After
     public void tearDown() {
+        Statistiques.reinitStats();
     }
 
     /**
@@ -145,5 +150,21 @@ public class FichierLectureTest {
 
         assertEquals(dossier.getDossierClient(), "A100323");
     }
+    
+    @Test
+    public void testLireInfosDossierDeux() throws Exception {        
+        dossier = FichierLecture.lireInfosDossier(
+                classLoader.getResource("dossierFichier.json").getFile());
 
+        assertEquals(dossier.getContrat(), "A");
+    }
+    
+    /**
+     * Test de la méthode lireStats , de la class FichierLecture.
+     */
+    @Test
+    public void testLireStats() throws Exception {
+        FichierLecture.lireStats(classLoader.getResource("statsTest.json").getFile());     
+        assertArrayEquals(Statistiques.getTabNbrSoins(), tbNbSoinsCat);
+    }
 }
