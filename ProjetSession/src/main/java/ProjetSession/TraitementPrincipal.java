@@ -51,7 +51,7 @@ public class TraitementPrincipal {
     }
     
     public static void traitementDossierStats(String[] args)  throws Exception {
-        Dossier dossierTraite = traitementDossier(args[0], args[1]);
+        Dossier dossierTraite = traitementDossier(args[0], args[1], null);
         
         if (dossierTraite.estValide()) {
             Statistiques.majStatReclamValides();
@@ -66,7 +66,7 @@ public class TraitementPrincipal {
     protected static void traitementDossierPrediction(String[] args) throws Exception{
         arg1IemeInvalide(args[0]);
         
-        Dossier dossierTraite = traitementDossier(args[1],args[2]);
+        Dossier dossierTraite = traitementDossier(args[1],args[2], args[0]);
         
         if (!dossierTraite.estValide()) {
             FichierEcriture.ecrireStats(FICHIER_STATS);
@@ -74,10 +74,10 @@ public class TraitementPrincipal {
         }
     }
     
-    protected static Dossier traitementDossier(String ficEntree, String ficSortie) throws Exception{
-        Dossier dossier = FichierLecture.lireInfosDossier(ficEntree, ficSortie);
+    protected static Dossier traitementDossier(String ficEntree, String ficSortie, String mode) throws Exception{
+        Dossier dossier = FichierLecture.lireInfosDossier(ficEntree, ficSortie, mode);
         
-        if (!dossier.estValide()) {
+        if (!dossier.estValide()) {                        
             return dossier;
         }
 

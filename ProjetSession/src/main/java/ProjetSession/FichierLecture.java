@@ -1,5 +1,6 @@
 package ProjetSession;
 
+import static ProjetSession.TraitementPrincipal.FICHIER_STATS;
 import java.io.IOException;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONException;
@@ -29,12 +30,24 @@ public class FichierLecture {
     public static String MSG_ERR_JSON_1 = "La clé '";
     public static String MSG_ERR_JSON_2 = "' est introuvable dans le fichier JSON";
 
-    public static Dossier lireInfosDossier(String nomFichierEntrer, String nomFichierSortie) {
+    public static Dossier lireInfosDossier(String nomFichierEntrer, String nomFichierSortie, 
+            String mode) {
         try {
             return lireInfosDossier(nomFichierEntrer);
         } catch (JSONException je) {
-            FichierEcriture.ecrireErreurInfosDossier(nomFichierSortie, MSG_ERR_JSON_1 + 
-                    obtCleErrJson(je.getMessage()) + MSG_ERR_JSON_2);                    
+            String errMessage;
+            if(je.getMessage().indexOf("\"") > 0){                
+                errMessage = MSG_ERR_JSON_1 + obtCleErrJson(je.getMessage()) + MSG_ERR_JSON_2; 
+            }else{
+                errMessage = je.getMessage();
+            }
+                        
+            if(mode == null){
+                Statistiques.majStatReclamRejetees();
+                FichierEcriture.ecrireStats(FICHIER_STATS);  
+            }
+     
+            FichierEcriture.ecrireErreurInfosDossier(nomFichierSortie, errMessage);                                                  
             return null;
         } catch (Exception e) {
             return null;
