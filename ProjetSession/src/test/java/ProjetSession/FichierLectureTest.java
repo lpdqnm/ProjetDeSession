@@ -30,6 +30,8 @@ public class FichierLectureTest {
     JSONArray tabJSON;
     boolean monttDollar;
     JSONObject objJSONItem;
+    
+    Dossier dossier;
             
     @Before
     public void setUp() {
@@ -122,11 +124,12 @@ public class FichierLectureTest {
         assertEquals(objJSON.getString("test"), "JUnit test");
     }
     @Test
-    public void testFichierEnObjJSODeux() {
+    public void testFichierEnObjJSONDeux() {
         
         objJSON = FichierLecture.fichierEnObjJSON(".\\src\\test\\resources\\jsonTest.json");
         assertEquals(objJSON.getString("langage"), "Java");
-    }@Test
+    }
+    @Test
     public void testFichierEnObjJSODossier() {
         
         objJSON = FichierLecture.fichierEnObjJSON(".\\src\\test\\resources\\dossierFichier.json");
@@ -138,6 +141,17 @@ public class FichierLectureTest {
                 + "\"montant\":\"130.00$\"}]}";
         
         assertEquals(objJSON.toString(), jsonStr);
+    }
+    
+    /**
+     * Test de la méthode lireInfosDossier , de la class FichierLecture.
+     */
+    @Test
+    public void testLireInfosDossier() throws Exception {
+        
+        dossier = FichierLecture.lireInfosDossier(".\\src\\test\\resources\\dossierFichier.json");
+        
+        assertEquals(dossier.getDossierClient(), "A100323");
     }
     
 }
