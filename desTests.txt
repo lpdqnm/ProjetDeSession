@@ -1,0 +1,75 @@
+﻿       try {
+            fichierJSON.lire("inputFile.json");
+        } catch (IOException ex) {
+            System.out.println("Erreur lors de la lecture du fichier JSON. " 
+                    + ex.getLocalizedMessage());
+            System.exit(1);       
+        }
+        try {
+            //fichierJSON.ecrire("outputFile.json", null);
+            //fichierJSON.ecrireErreur("outputFile.json");
+        } catch (IOException ex) {
+            System.out.println("Erreur avec le fichier de sortie : " 
+                    + ex.getLocalizedMessage());
+        }
+
+        try {
+            dossier = fichierJSON.lire("inputFile.json");
+            System.out.println(dossier);
+            
+            if (dossier != null) {
+                reclamations = dossier.getReclamations();
+                remboursements = new Remboursement[reclamations.length];
+
+                for (int i = 0; i < remboursements.length; i++) {
+                    item = reclamations[i];
+                    remboursements[i] = new Remboursement(item.getSoin(), 
+                            item.getDate(), item.getMontant());
+                }
+                dossier.setRemboursements(remboursements);
+                fichierJSON.ecrire("outputFile.json", dossier);
+            }
+            System.out.println(dossier);
+        } catch (IOException ex) {
+            try {
+                fichierJSON.ecrireErreur("outputFile.json");
+            } catch (IOException ex1) {
+                System.out.println("Erreur lors de la lecture du fichier JSON. "
+                        + ex.getLocalizedMessage());
+            }
+            System.exit(1);       
+        }
+
+		
+	public Dossier lire(String nomFichierEntrer) throws IOException {
+        String textJson = Utf8File.loadFileIntoString(nomFichierEntrer);
+        JSONObject racine = (JSONObject) JSONSerializer.toJSON(textJson);
+        String client = racine.getString("client");
+        String contrat = racine.getString("contrat");
+        String mois = racine.getString("mois");
+        JSONArray tabObjJson = racine.getJSONArray("reclamations");
+        System.out.println(client+" "+contrat+" "+mois);
+        return  null;
+    }
+	
+    public void ecrire(String nomFichierSortie, Dossier dossier) 
+            throws IOException {
+        JSONObject jsonObj = null;
+        JSONArray jsonArr = new JSONArray();
+        
+        for (int i = 0; i < 3; i++) {
+            jsonObj = new JSONObject();
+            jsonObj.accumulate("soin", 100 + i);
+            jsonObj.accumulate("date", "2017-01-11");
+            jsonObj.accumulate("montant", "234.00$");
+            
+            jsonArr.add(jsonObj);
+        }
+        
+        jsonObj = new JSONObject();
+        jsonObj.accumulate("client", "100323");
+        jsonObj.accumulate("mois", "2017-01");
+         jsonObj.accumulate("remboursements", jsonArr);
+         
+         Utf8File.saveStringIntoFile(nomFichierSortie, jsonObj.toString(4));
+    }
